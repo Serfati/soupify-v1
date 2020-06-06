@@ -1,0 +1,36 @@
+{
+  "name": "soupify",
+  "version": "0.1.8",
+  "description": "@see README.md",
+  "main": "controllers/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+  },
+  "author": "serfati",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.19.2",
+    "bcrypt": "^4.0.1",
+    "body-parser": "^1.19.0",
+    "chalk": "^4.0.0",
+    "cloudinary": "^1.21.0",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-fileupload": "^1.1.7-alpha.3",
+    "formidable": "^1.2.2",
+    "http-status-codes": "^1.4.0",
+    "jsonwebtoken": "^8.5.1",
+    "lodash": "^4.17.15",
+    "morgan": "^1.10.0",
+    "nodemon": "^2.0.4",
+    "passport": "^0.4.1",
+    "passport-jwt": "^4.0.0",
+    "password-generator": "^2.3.2",
+    "pg": "^8.2.1",
+    "pg-format": "^1.0.4",
+    "uuid": "^8.0.0"
+  }
+}

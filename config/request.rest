@@ -1,0 +1,28 @@
+###
+
+GET http://localhost:5000/api/users/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6IkFkbWluIiwiaWF0IjoxNTg5NzkxNjIyfQ.XsoOjSKiuNehkITNW24Iq-dnia9Z8HCYGGQuzUYRTBM
+
+###
+
+POST http://localhost:5000/api/authenticate HTTP/1.1
+content-type: application/json; charset=utf-8
+X-Powered-By: Express
+
+{
+  "login": "leah",
+  "password": "toor"
+}
+
+###
+
+POST http://localhost:5000/api/users/ HTTP/1.1
+content-type: application/json; charset=utf-8
+X-Powered-By: Express
+
+{
+  "login": "test",
+  "password": "1122"
+}
+
+###
