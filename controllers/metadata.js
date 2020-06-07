@@ -13,20 +13,9 @@ const soupifyRepository = require('../services/SoupifyRepository')
 router.get("/info", passport.authenticate("jwt", {session: false}), roleChecker(ROLES.Admin), getAllLists)
 router.get("/", passport.authenticate("jwt", {session: false}), getMetaById)
 
-router.get("/meal", passport.authenticate("jwt", {session: false}), getMeal)
-router.get("/favs", passport.authenticate("jwt", {session: false}), getFavs)
-router.get("/watched", passport.authenticate("jwt", {session: false}), getWatched)
-router.get("/personal", passport.authenticate("jwt", {session: false}), getPersonal)
-
-router.post("/meal/:recipe", passport.authenticate("jwt", {session: false}), updateMeal)
-router.post("/favs/:recipe", passport.authenticate("jwt", {session: false}), updateFavs)
-router.post("/watched/:recipe", passport.authenticate("jwt", {session: false}), updateWatched)
-router.post("/personal/:recipe", passport.authenticate("jwt", {session: false}), updatePersonal)
-
-router.delete("/favs/:recipe", passport.authenticate("jwt", {session: false}), removeFromFavs)
-router.delete("/meal/:recipe", passport.authenticate("jwt", {session: false}), removeFromMeal)
-router.delete("/watched/:recipe", passport.authenticate("jwt", {session: false}), removeFromWatched)
-router.delete("/personal/:recipe", passport.authenticate("jwt", {session: false}), removePersonal)
+router.get("/:col", passport.authenticate("jwt", {session: false}), getColumn)
+router.post("/:col/:recipe", passport.authenticate("jwt", {session: false}), updateList)
+router.delete("/:col/:recipe", passport.authenticate("jwt", {session: false}), removeFromList)
 
 async function addMeta(req, res) {
     try {
@@ -77,11 +66,13 @@ async function getMetaById(req, res) {
     }
 }
 
-async function getMeal(req, res) {
+async function getColumn(req, res) {
     try {
+        const column = req.params.col
+        if (!validList(column)) throw new NotFoundException("invalid list name.")
         const id = req.user.id
         const meta = await soupifyRepository.Metadata.getById(id)
-        await res.json({meal: meta.meal})
+        await res.json({[column]: meta[column]})
     } catch (e) {
         if (e instanceof NotFoundException)
             await res.status(HttpStatus.NOT_FOUND).json(e.message)
@@ -90,50 +81,13 @@ async function getMeal(req, res) {
     }
 }
 
-async function getFavs(req, res) {
+async function updateList(req, res) {
     try {
-        const id = req.user.id
-        const meta = await soupifyRepository.Metadata.getById(id)
-        await res.json({favs: meta.favs})
-    } catch (e) {
-        if (e instanceof NotFoundException)
-            await res.status(HttpStatus.NOT_FOUND).json(e.message)
-        else
-            await res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(new ErrorMessageModel("Internal Server Error. Error: " + e.message))
-    }
-}
-
-async function getPersonal(req, res) {
-    try {
-        const id = req.user.id
-        const meta = await soupifyRepository.Metadata.getById(id)
-        await res.json({personal: meta.personal})
-    } catch (e) {
-        if (e instanceof NotFoundException)
-            await res.status(HttpStatus.NOT_FOUND).json(e.message)
-        else
-            await res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(new ErrorMessageModel("Internal Server Error. Error: " + e.message))
-    }
-}
-
-async function getWatched(req, res) {
-    try {
-        const id = req.user.id
-        const meta = await soupifyRepository.Metadata.getById(id)
-        await res.json({watched: meta.watched})
-    } catch (e) {
-        if (e instanceof NotFoundException)
-            await res.status(HttpStatus.NOT_FOUND).json(e.message)
-        else
-            await res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(new ErrorMessageModel("Internal Server Error. Error: " + e.message))
-    }
-}
-
-async function updateMeal(req, res) {
-    try {
+        const column = req.params.col
+        if (!validList(column)) throw new NotFoundException("invalid list name.")
         const user_id = req.user.id
         const recipe_id = req.params.recipe
-        const updatedMeta = await soupifyRepository.Metadata.addTo(user_id, "meal", recipe_id)
+        const updatedMeta = await soupifyRepository.Metadata.addTo(user_id, column, recipe_id)
         await res.json(updatedMeta)
     } catch (e) {
         if (e instanceof NotFoundException)
@@ -143,11 +97,13 @@ async function updateMeal(req, res) {
     }
 }
 
-async function updateFavs(req, res) {
+async function removeFromList(req, res) {
     try {
+        const column = req.params.col
+        if (!validList(column)) throw new NotFoundException("invalid list name.")
         const user_id = req.user.id
         const recipe_id = req.params.recipe
-        const updatedMeta = await soupifyRepository.Metadata.addTo(user_id, "favs", recipe_id)
+        const updatedMeta = await soupifyRepository.Metadata.removeFrom(user_id, column, recipe_id)
         await res.json(updatedMeta)
     } catch (e) {
         if (e instanceof NotFoundException)
@@ -157,88 +113,16 @@ async function updateFavs(req, res) {
     }
 }
 
-async function updateWatched(req, res) {
-    try {
-        const user_id = req.user.id
-        const recipe_id = req.params.recipe
-        const updatedMeta = await soupifyRepository.Metadata.addTo(user_id, "watched", recipe_id)
-        await res.json(updatedMeta)
-    } catch (e) {
-        if (e instanceof NotFoundException)
-            await res.status(HttpStatus.NOT_FOUND).json(new ErrorMessageModel(e.message))
-        else
-            await res.status(HttpStatus.BAD_REQUEST).json(new ErrorMessageModel(e.message))
-    }
+function validList(col) {
+    const lists = ["favs", "meal", "watched", "personal"]
+    return lists.contains(col);
 }
 
-async function updatePersonal(req, res) {
-    try {
-        const user_id = req.user.id
-        const recipe_id = req.params.recipe
-        const updatedMeta = await soupifyRepository.Metadata.addTo(user_id, "personal", recipe_id)
-        await res.json(updatedMeta)
-    } catch (e) {
-        if (e instanceof NotFoundException)
-            await res.status(HttpStatus.NOT_FOUND).json(new ErrorMessageModel(e.message))
-        else
-            await res.status(HttpStatus.BAD_REQUEST).json(new ErrorMessageModel(e.message))
+Array.prototype.contains = function (needle) {
+    for (let i in this) {
+        if (this[i] === needle) return true;
     }
-}
-
-async function removeFromFavs(req, res) {
-    try {
-        const user_id = req.user.id
-        const recipe_id = req.params.recipe
-        const updatedMeta = await soupifyRepository.Metadata.removeFrom(user_id, "favs", recipe_id)
-        await res.json(updatedMeta)
-    } catch (e) {
-        if (e instanceof NotFoundException)
-            await res.status(HttpStatus.NOT_FOUND).json(new ErrorMessageModel(e.message))
-        else
-            await res.status(HttpStatus.BAD_REQUEST).json(new ErrorMessageModel(e.message))
-    }
-}
-
-async function removeFromMeal(req, res) {
-    try {
-        const user_id = req.user.id
-        const recipe_id = req.params.recipe
-        const updatedMeta = await soupifyRepository.Metadata.removeFrom(user_id, "meal", recipe_id)
-        await res.json(updatedMeta)
-    } catch (e) {
-        if (e instanceof NotFoundException)
-            await res.status(HttpStatus.NOT_FOUND).json(new ErrorMessageModel(e.message))
-        else
-            await res.status(HttpStatus.BAD_REQUEST).json(new ErrorMessageModel(e.message))
-    }
-}
-
-async function removeFromWatched(req, res) {
-    try {
-        const user_id = req.user.id
-        const recipe_id = req.params.recipe
-        const updatedMeta = await soupifyRepository.Metadata.removeFrom(user_id, "watched", recipe_id)
-        await res.json(updatedMeta)
-    } catch (e) {
-        if (e instanceof NotFoundException)
-            await res.status(HttpStatus.NOT_FOUND).json(new ErrorMessageModel(e.message))
-        else
-            await res.status(HttpStatus.BAD_REQUEST).json(new ErrorMessageModel(e.message))
-    }
-}
-
-async function removePersonal(req, res) {
-    try {
-        const user_id = req.user.id
-        const recipe_id = req.params.recipe
-        const updatedMeta = await soupifyRepository.Metadata.removeFrom(user_id, "personal", recipe_id)
-        await res.json(updatedMeta)
-    } catch (e) {
-        if (e instanceof NotFoundException)
-            await res.status(HttpStatus.NOT_FOUND).json(new ErrorMessageModel(e.message))
-        else
-            await res.status(HttpStatus.BAD_REQUEST).json(new ErrorMessageModel(e.message))
-    }
+    return false;
 }
 
 module.exports = router;

@@ -1,3 +1,5 @@
+const array = require("lodash");
+
 const BaseRepository = require('./BaseRepository')
 const AlreadyExistException = require("../../models/Exceptions/AlreadyExistException");
 const NotFoundException = require("../../models/Exceptions/NotFoundException");
@@ -7,13 +9,14 @@ const MetadataModel = require('../../models/MetadataModel')
 
 class MetadataRepository extends BaseRepository {
 
-    //TODO fix this quer
     async removeFrom(user_id, col, recipe_id) {
-        if (!(await this.getById(user_id))) {
-            throw new NotFoundException()
-        }
+        if (!(await this.getById(user_id))) throw new NotFoundException()
         let result = await this.getById(user_id)
-        const query = format(`UPDATE ${this._table} SET ${col} = (${result.favs}, ${recipe_id}) WHERE (user_id = ${user_id})`);
+        let oldList = result[col]
+        let filtered = oldList.filter(function (value, index, arr) {
+            return value !== recipe_id;
+        });
+        const query = format(`UPDATE ${this._table} SET ${col} = ${filtered} WHERE (user_id = ${user_id})`);
         await this._client.query(query)
         return await this.getById(user_id)
     }
@@ -26,7 +29,6 @@ class MetadataRepository extends BaseRepository {
             throw new NotFoundException()
         }
     }
-
 
     async getAllLists() {
         const result = await this._client.query(`SELECT * FROM ${this._table};`)
@@ -78,7 +80,6 @@ class MetadataRepository extends BaseRepository {
         await this._client.query(query)
         return await this.getById(user_id)
     }
-
 
     _getMetaFromRow(row) {
         return new MetadataModel(row.user_id, row.favs, row.watched, row.personal, row.meal)
