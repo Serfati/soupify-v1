@@ -5,16 +5,16 @@
 
 # Description
 
-This is the backend server for the **Soupify** recipes frontend.
+This is the backend server for the **Soupify** recipes.
 This project is created for learning purposes of code quality, testing and architecture design.
 This RESTful API deployed with the help of [`Heroku`](https://heroku.com/) which allowing CD.
-<br>Base API: **[`https://soupify.herokuapp.com/api`](https://soupify.herokuapp.com/api)**.
+<br>**Live** API Server: **[`https://soupify.herokuapp.com/api`](https://soupify.herokuapp.com/api)**.
 
 ---
 
 ## Linked Repositories
 
-- [Front-end Web client](https://github.com/uspeit/webenv-assignment3-client)
+- [Front-end Web client]() - TODO
 - [API Specification](https://github.com/Serfati/soupify-api-specs)
 
 ---
@@ -22,7 +22,7 @@ This RESTful API deployed with the help of [`Heroku`](https://heroku.com/) which
 ## 📃 Documentation
 
 - [OpenApi 3 Specification](https://app.swaggerhub.com/apis-docs/serfatio/Soupify/1.0.0#/)
-- [Web application](https://uspeit.github.io/webenv-assignment3-client-dist)
+- [Vue Web Application]() - TODO
 
 ---
 
@@ -51,7 +51,7 @@ You can modify or contribute to this project by following the steps below:
   $> cd soupify
   ```
 
-**2. Setup**
+**2. Setup**k
 
 - Install npm packages in project directory
 
@@ -81,6 +81,7 @@ You can modify or contribute to this project by following the steps below:
     cloudinary_name=
     cloudinary_key=
     cloudinary_secret=
+    bcrypt_rounds=10
     ```
 
 **3. Run Locally**
