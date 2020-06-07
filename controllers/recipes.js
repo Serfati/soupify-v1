@@ -173,10 +173,6 @@ async function random(_, res) {
             }
         })
         rands = cleanUp(rands.data.recipes)
-        console.log(rands)
-        rands[0].id = undefined;
-        rands[1].id = undefined;
-        rands[2].id = undefined;
         rands = JSON.parse(JSON.stringify(rands));
         await res.status(HttpStatus.OK).json({results: rands});
     } catch (e) {

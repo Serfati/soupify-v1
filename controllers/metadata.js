@@ -13,26 +13,44 @@ const soupifyRepository = require('../services/SoupifyRepository')
 router.get("/info", passport.authenticate("jwt", {session: false}), roleChecker(ROLES.Admin), getAllLists)
 router.get("/", passport.authenticate("jwt", {session: false}), getMetaById)
 
-router.get("/recipe/:id", passport.authenticate("jwt", {session: false}), recipeMeta)
+router.get("/last-seen", passport.authenticate("jwt", {session: false}), lastSeen)
 router.get("/:col", passport.authenticate("jwt", {session: false}), getColumn)
 router.post("/:col/:recipe", passport.authenticate("jwt", {session: false}), updateList)
 router.delete("/:col/:recipe", passport.authenticate("jwt", {session: false}), removeFromList)
 
-
-async function recipeMeta(req, res) {
+async function recipeMeta(req, recipeId) {
     try {
         const id = req.user.id
-        const recipeId = req.params.id
         const recipe = await soupifyRepository.Recipes.getById(recipeId)
         const meta = await soupifyRepository.Metadata.getById(id)
         const favs = meta["favs"].contains(parseInt(recipeId))
         const watched = meta["watched"].contains(parseInt(recipeId))
         recipe["favs"] = favs
         recipe["watched"] = watched
-        await res.json(recipe)
+        return recipe
     } catch (e) {
         if (e instanceof NotFoundException) {
             console.log("id not found.")
+        } else
+            console.log("id not found.")
+        // return new json(new ErrorMessageModel("Internal Server Error. Error: " + e.message))
+    }
+}
+
+async function lastSeen(req, res) {
+    try {
+        let recipe
+        let lastSeen = []
+        const meta = await soupifyRepository.Metadata.getById(req.user.id)
+        meta["watched"].map(async i => {
+            recipe = await recipeMeta(req, i);
+            lastSeen.push(recipe)
+            console.log(recipe)
+        })
+        await res.json(lastSeen)
+    } catch (e) {
+        if (e instanceof NotFoundException) {
+            console.log("not found.")
             await addMeta(req, res)
         } else
             await res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(new ErrorMessageModel("Internal Server Error. Error: " + e.message))
