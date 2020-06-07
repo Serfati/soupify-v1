@@ -13,10 +13,11 @@ class MetadataRepository extends BaseRepository {
         if (!(await this.getById(user_id))) throw new NotFoundException()
         let result = await this.getById(user_id)
         let oldList = result[col]
-        let filtered = oldList.filter(function (value, index, arr) {
-            return value !== recipe_id;
+        let filtered = oldList.filter(function (value) {
+            // noinspection EqualityComparisonWithCoercionJS
+            return value != recipe_id;
         });
-        const query = format(`UPDATE ${this._table} SET ${col} = ${filtered} WHERE (user_id = ${user_id})`);
+        const query = format(`UPDATE ${this._table} SET ${col} = ARRAY[${filtered}] WHERE (user_id = ${user_id})`);
         await this._client.query(query)
         return await this.getById(user_id)
     }
