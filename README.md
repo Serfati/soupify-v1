@@ -4,7 +4,7 @@
 ![](https://img.shields.io/badge/version-0.1.0-blueviolet)
 
 # Description
-
+:elephant: PostgreSQL Backend server for Soupify. Written with Node.js + express using Azure cloud :cyclone:
 This is the backend server for the **Soupify** recipes.
 This project is created for learning purposes of code quality, testing and architecture design.
 This RESTful API deployed with the help of [`Heroku`](https://heroku.com/) which allowing CD.
