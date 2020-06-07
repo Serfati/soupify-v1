@@ -18,7 +18,7 @@ router.get("/", (_, res) => {
 });
 
 router.get(`${baseApi}`, (_, res) => {
-    res.sendFile(process.cwd() + "/API/OpenAPI/index.html");
+    res.sendFile(path.join(__dirname, '..', "/API/OpenAPI/index.html"));
 });
 
 module.exports = router;
