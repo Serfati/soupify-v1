@@ -81,6 +81,7 @@ You can modify or contribute to this project by following the steps below:
     cloudinary_name=
     cloudinary_key=
     cloudinary_secret=
+    bcrypt_rounds=10
     ```
 
 **3. Run Locally**
