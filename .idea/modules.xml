@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/assignment-3-2-sye-soupify.iml" filepath="$PROJECT_DIR$/.idea/assignment-3-2-sye-soupify.iml" />
-      <module fileurl="file://$PROJECT_DIR$/../soupify/.idea/soupify.iml" filepath="$PROJECT_DIR$/../soupify/.idea/soupify.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/soupify.iml" filepath="$PROJECT_DIR$/.idea/soupify.iml" />
     </modules>
   </component>
 </project>
