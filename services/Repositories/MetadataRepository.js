@@ -1,5 +1,3 @@
-const array = require("lodash");
-
 const BaseRepository = require('./BaseRepository')
 const AlreadyExistException = require("../../models/Exceptions/AlreadyExistException");
 const NotFoundException = require("../../models/Exceptions/NotFoundException");

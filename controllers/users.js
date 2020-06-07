@@ -65,7 +65,7 @@ async function updateUser(req, res) {
             currentUser,
             jsonBody.login,
             jsonBody.role,
-            await bcrypt.hash(jsonBody.password, process.env.bcrypt_rounds),
+            await bcrypt.hash(jsonBody.password, 10),
             jsonBody.avatar,
             jsonBody.fullname,
             jsonBody.is_blocked,
