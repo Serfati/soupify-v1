@@ -7,7 +7,7 @@ const MetadataModel = require('../../models/MetadataModel')
 
 class MetadataRepository extends BaseRepository {
 
-    //TODO fix this query
+    //TODO fix this quer
     async removeFrom(user_id, col, recipe_id) {
         if (!(await this.getById(user_id))) {
             throw new NotFoundException()
