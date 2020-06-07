@@ -13,7 +13,7 @@ class MetadataRepository extends BaseRepository {
             throw new NotFoundException()
         }
         let result = await this.getById(user_id)
-        const query = format(`UPDATE ${this._table} SET ${col} =  array_remove(${result.favs}, ${recipe_id}) WHERE (user_id = ${user_id})`);
+        const query = format(`UPDATE ${this._table} SET ${col} = (${result.favs}, ${recipe_id}) WHERE (user_id = ${user_id})`);
         await this._client.query(query)
         return await this.getById(user_id)
     }
