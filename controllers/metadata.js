@@ -1,14 +1,17 @@
 require("lodash")
+const axios = require("axios");
 const express = require('express')
 const router = express.Router()
 const passport = require("passport")
 const HttpStatus = require('http-status-codes')
 const ROLES = require("../models/roles");
 const roleChecker = require("../middlewares/role-checker");
+const {cleanUp} = require("../controllers/recipes");
 const AlreadyExistException = require("../models/Exceptions/AlreadyExistException.js");
 const ErrorMessageModel = require("../models/ErrorMessageModel");
 const NotFoundException = require("../models/Exceptions/NotFoundException");
 
+const api_domain = "https://api.spoonacular.com/recipes";
 const soupifyRepository = require('../services/SoupifyRepository')
 
 router.get("/info", passport.authenticate("jwt", {session: false}), roleChecker(ROLES.Admin), getAllLists)
@@ -139,7 +142,23 @@ function validList(col) {
 
 async function fetchWatched(id, recipe_id) {
     try {
-        const recipe = await soupifyRepository.Recipes.getById(recipe_id)
+        let recipe
+        let recipes = []
+        if (recipe_id < 200) {
+            recipe = await soupifyRepository.Recipes.getById(recipe_id)
+            recipes.push(recipe)
+        } else {
+            recipe = await axios.get(`${api_domain}/${recipe_id}/information`, {
+                params: {
+                    includeNutrition: false,
+                    apiKey: process.env.spooncaular
+                }
+            });
+            recipe = recipe.data
+            recipes.push(recipe)
+            recipes = cleanUp(recipes)
+        }
+        // recipes = cleanUp(recipes)
         const meta = await soupifyRepository.Metadata.getById(id)
         const favs = meta["favs"].contains(parseInt(recipe_id))
         const watched = meta["watched"].contains(parseInt(recipe_id))

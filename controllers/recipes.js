@@ -280,5 +280,5 @@ Array.prototype.contains = function (needle) {
     return false;
 }
 
-
-module.exports = router;
+module.exports.cleanUp = cleanUp;
+module.exports = router
