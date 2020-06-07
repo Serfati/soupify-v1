@@ -56,7 +56,7 @@ async function validation(req, res) {
         const match = user.answer === answer
         const user_id = user.id;
         if (match) {
-            let password = generatePassword(7, false, /[\w\d\?\-]/);
+            let password = generatePassword(7, false, /[\w\d?\-]/);
             const hash = await bcrypt.hash(password, 10);
             await soupifyRepository.Users.setNewPassword(user_id, hash)
             await res.json({new_password: password})

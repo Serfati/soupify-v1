@@ -13,9 +13,31 @@ const soupifyRepository = require('../services/SoupifyRepository')
 router.get("/info", passport.authenticate("jwt", {session: false}), roleChecker(ROLES.Admin), getAllLists)
 router.get("/", passport.authenticate("jwt", {session: false}), getMetaById)
 
+router.get("/recipe/:id", passport.authenticate("jwt", {session: false}), recipeMeta)
 router.get("/:col", passport.authenticate("jwt", {session: false}), getColumn)
 router.post("/:col/:recipe", passport.authenticate("jwt", {session: false}), updateList)
 router.delete("/:col/:recipe", passport.authenticate("jwt", {session: false}), removeFromList)
+
+
+async function recipeMeta(req, res) {
+    try {
+        const id = req.user.id
+        const recipeId = req.params.id
+        const recipe = await soupifyRepository.Recipes.getById(recipeId)
+        const meta = await soupifyRepository.Metadata.getById(id)
+        const favs = meta["favs"].contains(parseInt(recipeId))
+        const watched = meta["watched"].contains(parseInt(recipeId))
+        recipe["favs"] = favs
+        recipe["watched"] = watched
+        await res.json(recipe)
+    } catch (e) {
+        if (e instanceof NotFoundException) {
+            console.log("id not found.")
+            await addMeta(req, res)
+        } else
+            await res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(new ErrorMessageModel("Internal Server Error. Error: " + e.message))
+    }
+}
 
 async function addMeta(req, res) {
     try {

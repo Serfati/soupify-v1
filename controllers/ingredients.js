@@ -68,7 +68,7 @@ async function removeIngredient(req, res) {
         await soupifyRepository.Ingredients.delete(id);
         res.status(HttpStatus.OK).send();
     } catch (e) {
-        if (e instanceof NotFountException) {
+        if (e instanceof NotFoundException) {
             await res
                 .status(HttpStatus.NOT_FOUND)
                 .json(new ErrorMessageModel(`Recipe ${req.params.id} not found.`));

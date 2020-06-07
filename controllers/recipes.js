@@ -9,7 +9,7 @@ const RecipeDataModel = require("../models/RecipeDataModel");
 const paginator = require("../middlewares/paginator");
 const ErrorMessageModel = require("../models/ErrorMessageModel");
 const InvalidArgumentException = require("../models/Exceptions/InvalidArgumentException");
-const NotFountException = require("../models/Exceptions/NotFoundException");
+const NotFoundException = require("../models/Exceptions/NotFoundException");
 require("../models/Exceptions/AlreadyExistException");
 const api_domain = "https://api.spoonacular.com/recipes";
 
@@ -61,9 +61,10 @@ async function getRecipeById(req, res) {
     try {
         const id = req.params.id;
         const recipe = await soupifyRepository.Recipes.getById(id);
+        const last_seen = await soupifyRepository.Metadata.checkExistId(id);
         await res.status(HttpStatus.OK).json(recipe);
     } catch (e) {
-        if (e instanceof NotFountException) {
+        if (e instanceof NotFoundException) {
             await res
                 .status(HttpStatus.NOT_FOUND)
                 .json(new ErrorMessageModel(`Recipe ${req.params.id} not found.`));
@@ -83,7 +84,7 @@ async function deleteRecipeById(req, res) {
         await soupifyRepository.Recipes.delete(id);
         res.status(HttpStatus.OK).send();
     } catch (e) {
-        if (e instanceof NotFountException) {
+        if (e instanceof NotFoundException) {
             await res
                 .status(HttpStatus.NOT_FOUND)
                 .json(new ErrorMessageModel(`Recipe ${req.params.id} not found.`));
@@ -177,7 +178,6 @@ async function random(_, res) {
         rands[1].id = undefined;
         rands[2].id = undefined;
         rands = JSON.parse(JSON.stringify(rands));
-        // await soupifyRepository.Recipes.add(rands[0]);
         await res.status(HttpStatus.OK).json({results: rands});
     } catch (e) {
         await res
@@ -274,6 +274,13 @@ function cleanUp(recipes) {
             }
         }
     );
+}
+
+Array.prototype.contains = function (needle) {
+    for (let i in this) {
+        if (this[i] === needle) return true;
+    }
+    return false;
 }
 
 

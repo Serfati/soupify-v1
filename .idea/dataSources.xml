@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
+    <data-source source="LOCAL" name="soupify@azure" uuid="a61be381-d404-436c-8a82-d2b1d128c0ba">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://serfati.postgres.database.azure.com:5432/soupify_db</jdbc-url>
+    </data-source>
+  </component>
+</project>

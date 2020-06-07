@@ -5,15 +5,10 @@ const HttpStatus = require('http-status-codes');
 const {v4: uuidv4} = require("uuid");
 const Formidable = require("formidable");
 const cloudinary = require("cloudinary");
-const fs = require("fs");
 const path = require("path");
-const {promisify} = require("util");
-const stat = promisify(fs.stat);
 const FileModel = require("../models/FileModel");
 const url = require("url");
 const ErrorMessageModel = require("../models/ErrorMessageModel");
-const NotFoundException = require("../models/Exceptions/NotFoundException");
-const soupifyRepository = require("../services/SoupifyRepository");
 
 router.post("/", passport.authenticate("jwt", {session: false}), uploadImg);
 
