@@ -10,7 +10,8 @@ const paginator = require("../middlewares/paginator");
 const ErrorMessageModel = require("../models/ErrorMessageModel");
 const InvalidArgumentException = require("../models/Exceptions/InvalidArgumentException");
 const NotFoundException = require("../models/Exceptions/NotFoundException");
-require("../models/Exceptions/AlreadyExistException");
+const AlreadyExistException = require("../models/Exceptions/AlreadyExistException");
+
 const api_domain = "https://api.spoonacular.com/recipes";
 
 const soupifyRepository = require("../services/SoupifyRepository");
@@ -61,7 +62,7 @@ async function getRecipeById(req, res) {
     try {
         const id = req.params.id;
         const recipe = await soupifyRepository.Recipes.getById(id);
-        const last_seen = await soupifyRepository.Metadata.checkExistId(id);
+        await soupifyRepository.Metadata.checkExistId(id);
         await res.status(HttpStatus.OK).json(recipe);
     } catch (e) {
         if (e instanceof NotFoundException) {

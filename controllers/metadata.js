@@ -1,3 +1,4 @@
+require("lodash")
 const express = require('express')
 const router = express.Router()
 const passport = require("passport")
@@ -18,40 +19,18 @@ router.get("/:col", passport.authenticate("jwt", {session: false}), getColumn)
 router.post("/:col/:recipe", passport.authenticate("jwt", {session: false}), updateList)
 router.delete("/:col/:recipe", passport.authenticate("jwt", {session: false}), removeFromList)
 
-async function recipeMeta(req, recipeId) {
-    try {
-        const id = req.user.id
-        const recipe = await soupifyRepository.Recipes.getById(recipeId)
-        const meta = await soupifyRepository.Metadata.getById(id)
-        const favs = meta["favs"].contains(parseInt(recipeId))
-        const watched = meta["watched"].contains(parseInt(recipeId))
-        recipe["favs"] = favs
-        recipe["watched"] = watched
-        return recipe
-    } catch (e) {
-        if (e instanceof NotFoundException) {
-            console.log("id not found.")
-        } else
-            console.log("id not found.")
-        // return new json(new ErrorMessageModel("Internal Server Error. Error: " + e.message))
-    }
-}
 
 async function lastSeen(req, res) {
     try {
-        let recipe
-        let lastSeen = []
         const meta = await soupifyRepository.Metadata.getById(req.user.id)
-        meta["watched"].map(async i => {
-            recipe = await recipeMeta(req, i);
-            lastSeen.push(recipe)
-            console.log(recipe)
-        })
-        await res.json(lastSeen)
+        const lastList = meta["watched"].slice(-3)
+        let lastSeen = await Promise.all(lastList.map(async function (item) {
+            return fetchWatched(req.user.id, item)
+        }));
+        await res.status(HttpStatus.OK).json({results: lastSeen})
     } catch (e) {
         if (e instanceof NotFoundException) {
-            console.log("not found.")
-            await addMeta(req, res)
+            await res.status(HttpStatus.NOT_FOUND).json(e.message)
         } else
             await res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(new ErrorMessageModel("Internal Server Error. Error: " + e.message))
     }
@@ -156,6 +135,23 @@ async function removeFromList(req, res) {
 function validList(col) {
     const lists = ["favs", "meal", "watched", "personal"]
     return lists.contains(col);
+}
+
+async function fetchWatched(id, recipe_id) {
+    try {
+        const recipe = await soupifyRepository.Recipes.getById(recipe_id)
+        const meta = await soupifyRepository.Metadata.getById(id)
+        const favs = meta["favs"].contains(parseInt(recipe_id))
+        const watched = meta["watched"].contains(parseInt(recipe_id))
+        recipe["favs"] = favs
+        recipe["watched"] = watched
+        return JSON.parse(JSON.stringify(recipe))
+    } catch (e) {
+        if (e instanceof NotFoundException) {
+            console.log("recipe id or user not found.")
+        } else
+            console.log(new ErrorMessageModel("Internal Server Error. Error: " + e.message))
+    }
 }
 
 Array.prototype.contains = function (needle) {
