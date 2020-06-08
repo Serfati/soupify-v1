@@ -109,6 +109,7 @@ async function updateList(req, res) {
         if (!validList(column)) throw new NotFoundException("invalid list name.")
         const user_id = req.user.id
         const recipe_id = req.params.recipe
+        await soupifyRepository.Metadata.removeFrom(user_id, column, recipe_id)
         const updatedMeta = await soupifyRepository.Metadata.addTo(user_id, column, recipe_id)
         await res.json(updatedMeta)
     } catch (e) {

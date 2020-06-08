@@ -75,7 +75,21 @@ class MetadataRepository extends BaseRepository {
     }
 
     async addTo(user_id, col, recipe_id) {
-        const query = format(`UPDATE ${this._table} SET ${col} = ${col} || ${recipe_id}  WHERE  NOT ${recipe_id} = ANY(SELECT ${col} FROM ${this._table} WHERE 'user_id' = ${user_id})`);
+        const query = format(`UPDATE ${this._table} SET ${col} = ${col} || ${recipe_id} WHERE user_id = ${user_id}`);
+        await this._client.query(query)
+        return await this.getById(user_id)
+    }
+
+    async addTo2(user_id, col, recipe_id) {
+        if (!(await this.getById(user_id))) throw new NotFoundException()
+        let result = await this.getById(user_id)
+        let oldList = result[col]
+        oldList.push(parseInt(recipe_id))
+        let filtered = oldList.filter(function (value) {
+            // noinspection EqualityComparisonWithCoercionJS
+            return value != recipe_id;
+        });
+        const query = format(`UPDATE ${this._table} SET ${col} = ARRAY[${filtered}] WHERE (user_id = ${user_id})`);
         await this._client.query(query)
         return await this.getById(user_id)
     }
@@ -83,7 +97,5 @@ class MetadataRepository extends BaseRepository {
     _getMetaFromRow(row) {
         return new MetadataModel(row.user_id, row.favs, row.watched, row.personal, row.meal, row.family)
     }
-
 }
-
 module.exports = MetadataRepository
