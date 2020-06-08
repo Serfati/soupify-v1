@@ -4,8 +4,8 @@ create table public.metadata
     favs     INTEGER[],
     watched  INTEGER[],
     personal INTEGER[],
-    meal     INTEGER[]
-
+    meal     INTEGER[],
+    family   INTEGER[]
 );
 alter table public.metadata
     owner to soupify;

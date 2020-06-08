@@ -47,8 +47,8 @@ class MetadataRepository extends BaseRepository {
         await this.checkExistId(id);
 
         // Create User
-        const sqlQuery = `INSERT INTO ${this._table} (user_id, watched, favs, personal, meal) VALUES ('${id}',
-         ARRAY[]::INTEGER[],ARRAY[]::INTEGER[],ARRAY[]::INTEGER[],ARRAY[]::INTEGER[]) RETURNING *`;
+        const sqlQuery = `INSERT INTO ${this._table} (user_id, watched, favs, personal, meal, family) VALUES ('${id}',
+         ARRAY[]::INTEGER[],ARRAY[]::INTEGER[],ARRAY[]::INTEGER[],ARRAY[]::INTEGER[],ARRAY[]::INTEGER[]) RETURNING *`;
 
         const result = await this._client.query(sqlQuery);
         const row = result.rows[0];
@@ -75,13 +75,13 @@ class MetadataRepository extends BaseRepository {
     }
 
     async addTo(user_id, col, recipe_id) {
-        const query = format(`UPDATE ${this._table} SET ${col} = ${col} || ${recipe_id} WHERE (user_id = ${user_id} AND ${recipe_id} = ANY(favs) IS NOT TRUE )`);
+        const query = format(`UPDATE ${this._table} SET ${col} = ${col} || ${recipe_id}  WHERE  NOT ${recipe_id} = ANY(SELECT ${col} FROM ${this._table} WHERE 'user_id' = ${user_id})`);
         await this._client.query(query)
         return await this.getById(user_id)
     }
 
     _getMetaFromRow(row) {
-        return new MetadataModel(row.user_id, row.favs, row.watched, row.personal, row.meal)
+        return new MetadataModel(row.user_id, row.favs, row.watched, row.personal, row.meal, row.family)
     }
 
 }

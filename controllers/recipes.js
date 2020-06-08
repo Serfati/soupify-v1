@@ -44,11 +44,11 @@ async function preview(req, res) {
         let recipes = []
         recipes.push(recipe.data)
         recipes = cleanUp(recipes)
-        recipes[0].instructions = undefined;
-        recipes[0].extended_ingredients = undefined;
-        recipes[0].serving = undefined;
+        // recipes[0].instructions = undefined;
+        // recipes[0].extended_ingredients = undefined;
+        // recipes[0].serving = undefined;
         recipes = JSON.parse(JSON.stringify(recipes));
-        res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(...recipes);
+        res.status(HttpStatus.OK).send(...recipes);
     } catch (e) {
         await res
             .status(HttpStatus.INTERNAL_SERVER_ERROR)

@@ -136,18 +136,16 @@ async function removeFromList(req, res) {
 }
 
 function validList(col) {
-    const lists = ["favs", "meal", "watched", "personal"]
+    const lists = ["favs", "meal", "watched", "personal", "family"]
     return lists.contains(col);
 }
 
 async function fetchWatched(id, recipe_id) {
     try {
         let recipe
-        let recipes = []
-        if (recipe_id < 200) {
+        if (recipe_id < 200)
             recipe = await soupifyRepository.Recipes.getById(recipe_id)
-            recipes.push(recipe)
-        } else {
+        else {
             recipe = await axios.get(`${api_domain}/${recipe_id}/information`, {
                 params: {
                     includeNutrition: false,
@@ -155,8 +153,6 @@ async function fetchWatched(id, recipe_id) {
                 }
             });
             recipe = recipe.data
-            recipes.push(recipe)
-            recipes = cleanUp(recipes)
         }
         const meta = await soupifyRepository.Metadata.getById(id)
         const favs = meta["favs"].contains(parseInt(recipe_id))
