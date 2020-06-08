@@ -19,7 +19,6 @@ const soupifyRepository = require("../services/SoupifyRepository");
 router.post("/", passport.authenticate("jwt", {session: false}), createRecipe)
 router.get("/", getAllRecipes);
 router.get("/search", search);
-router.get("/preview", preview);
 router.get("/rand", random);
 router.get("/:id", passport.authenticate("jwt", {session: false}), getRecipeById);
 router.put("/:id", passport.authenticate("jwt", {session: false}), updateRecipe);
@@ -38,17 +37,14 @@ async function getAllRecipes(req, res) {
     }
 }
 
-async function preview(req, res) {
+async function spoonInfo(req, res) {
     try {
-        let recipe = await getInfo(req.query.id);
+        let recipe = await getInfo(req.params.id);
         let recipes = []
         recipes.push(recipe.data)
         recipes = cleanUp(recipes)
-        // recipes[0].instructions = undefined;
-        // recipes[0].extended_ingredients = undefined;
-        // recipes[0].serving = undefined;
         recipes = JSON.parse(JSON.stringify(recipes));
-        res.status(HttpStatus.OK).send(...recipes);
+        return recipes[0];
     } catch (e) {
         await res
             .status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -60,9 +56,13 @@ async function preview(req, res) {
 
 async function getRecipeById(req, res) {
     try {
+        const local = (req.query.local === 'true');
         const id = req.params.id;
-        const recipe = await soupifyRepository.Recipes.getById(id);
-        await soupifyRepository.Metadata.checkExistId(id);
+        let recipe
+        if (local)
+            recipe = await soupifyRepository.Recipes.getById(id);
+        else
+            recipe = await spoonInfo(req, res);
         await res.status(HttpStatus.OK).json(recipe);
     } catch (e) {
         if (e instanceof NotFoundException) {
@@ -287,5 +287,4 @@ Array.prototype.contains = function (needle) {
     return false;
 }
 
-module.exports.cleanUp = cleanUp;
 module.exports = router
