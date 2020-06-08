@@ -15,7 +15,8 @@ This RESTful API deployed with the help of [`Heroku`](https://heroku.com/) which
 ## Linked Repositories
 
 - [Front-end Web client]() - TODO
-- [API Specification](https://github.com/Serfati/soupify-api-specs)
+- [API Specification v1.0](https://github.com/Serfati/soupify-api-specs)
+- [API Specification v1.1](https://github.com/Serfati/soupify-api-specs-v1.1)
 
 ---
 

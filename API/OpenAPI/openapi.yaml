@@ -1,0 +1,1602 @@
+openapi: 3.0.0
+info:
+  title: Soupify™
+  description: "This is a backend server API for storing recipes and meals we coocked.\
+    \ \n*RestfulAPI* for the re-branding project of Engineering-Students-Recipes Company\
+    \ to their new company, **Soupify™**. This project was creating as a group project\
+    \ for Web-Development-Environments course *@Ben-Gurion University*. For more details\
+    \ on the process/design please read the linked *README.md* file.\n  \n**Authorization**:\n\
+    A logged-in user must update/delete his resources **ONLY**! Otherwise, he will\
+    \ receive 403 Unauthorized Error.\n\n**Base URL:** `{your_custom_url}/api`\n\n\
+    ---\n**Validity**:\nAll parameters sent to any API endpoint are validated according\
+    \ to the following criteria:\n* Required vs Optional\n* Numeric vs Alpha vs Alphanumeric\n\
+    * Unique vs Multiple\n* Min/max length of strings\n* Min/max values of numbers\n\
+    * Date formats\n\n---\n**Request Headers**:\nAll request headers must have the\
+    \ following fields:\n```\n  Authorization: Bearer <user's auth JSON Web Token>\n\
+    ```\nYou can use this header token for admin access:\n\n Authorization: Bearer\
+    \ eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6IkFkbWluIiwiaWF0IjoxNTkxMzA3MTQ2fQ.yI_YTi1iaKAButmqg7cBouxlJnWaNfhGePm0LGI0giQ\n\
+    \n---\n**Pagination**:\nPages and Limits are query parameters which are designed\
+    \ for paginate freely. Pages and Limits must be **NUMERIC**.\n* page is the page\
+    \ number jump to.\n* Limit is the number of items per page.\n* offest calculate\
+    \ as (page - 1) x limit\n```\n  \"page\": 1, 2, 3 ...\n  \"limit\": 5, 10, 15\
+    \ ...\n```\n\n---\n**Response Format**:\nResponses have a specific format. We\
+    \ will use the User model to depict an example, but User can be any other model.\n\
+    \n  * **Successful Response with an array of users**:\n```\n {\n  \"Pagination\"\
+    : {\n    \"page\": 1,\n    \"per_page\": 5,\n    \"pre_page\": null,\n    \"next_page\"\
+    : 2,\n    \"total\": 100,\n    \"total_pages\": 20\n    },\n    \"data\": [\n\
+    \      {\n        * user object *\n      }\n  ]\n}\n\n```\n---"
+  contact:
+    email: serfata@post.bgu.ac.il
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+servers:
+  - url: https://virtserver.swaggerhub.com/serfatio/Soupify/1.0.0
+    description: SwaggerHub API Auto Mocking
+  - url: https://soupify.herokuapp.com/api/
+    description: RESRful API server - Soupify App
+tags:
+  - name: auth
+    description: Endpoint for authentication.
+  - name: account
+    description: Endpoint for working with current account.
+  - name: users
+    description: Endpoint for working with use.
+  - name: recipes
+    description: Everything about our recipes
+  - name: ingredients
+    description: Ingredients we use
+  - name: meta
+    description: meta-data for users
+paths:
+  /authenticate/:
+    post:
+      tags:
+        - auth
+      summary: Authentication in the system.
+      operationId: auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/creditionals'
+        required: true
+      responses:
+        "200":
+          description: Success
+          content:
+            application-json:
+              schema:
+                $ref: '#/components/schemas/user'
+        "400":
+          description: No login or password.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        "401":
+          description: Authentication failed. Wrong password.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        "404":
+          description: User not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        "500":
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+  /authenticate/password-reset:
+    put:
+      tags:
+        - auth
+      summary: Reset user password by Q&A.
+      description: A user sends his answer on question to restore his account.
+      operationId: resetPassword
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/body'
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200'
+        "500":
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+    post:
+      tags:
+        - auth
+      summary: Reset user password by Q&A.
+      description: A user get his question for restore his account.
+      operationId: getUserRecoveryQ
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/body_1'
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_1'
+        "500":
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+  /account/:
+    get:
+      tags:
+        - account
+      summary: Get current account.
+      description: Returns account information. The token identifies the account.
+      operationId: getCurrentAccount
+      responses:
+        "200":
+          description: User was created.
+          content:
+            application-json:
+              schema:
+                $ref: '#/components/schemas/user'
+        "401":
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        "500":
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+      security:
+        - bearerAuth: []
+  /users/:
+    get:
+      tags:
+        - users
+      summary: Get all users
+      description: This **Admin** endpoint is designed to get all users according
+        to the specified query paramaters. All query parameters are optional. If no
+        parameter is set, it returns all users according to the default values of
+        limit and offset.
+      operationId: getAllUsers
+      parameters:
+        - name: page
+          in: query
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: integer
+            format: int64
+        - name: limit
+          in: query
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: Array of users
+          content:
+            application-json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/user'
+        "401":
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        "403":
+          description: Forbidden. Only manager can get all.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+      security:
+        - bearerAuth: []
+    post:
+      tags:
+        - users
+      summary: Create a new user.
+      description: Create a new user is system. Role by default - `client`.
+      operationId: createUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/creditionals'
+        required: true
+      responses:
+        "201":
+          description: User was created.
+          content:
+            application-json:
+              schema:
+                $ref: '#/components/schemas/user'
+        "400":
+          description: Login or password not exist
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        "409":
+          description: User already exist
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        "500":
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+  /users/{id}:
+    get:
+      tags:
+        - users
+      summary: Get a user by {id}.
+      operationId: getUserById
+      parameters:
+        - name: id
+          in: path
+          description: User id.
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: User was created.
+          content:
+            application-json:
+              schema:
+                $ref: '#/components/schemas/user'
+        "401":
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        "404":
+          description: User not found by id.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        "500":
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+      security:
+        - bearerAuth: []
+    put:
+      tags:
+        - users
+      summary: Update a user.
+      description: Update a user.
+      operationId: updateUser
+      parameters:
+        - name: id
+          in: path
+          description: User id.
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/userUpdatableInfo'
+        required: true
+      responses:
+        "200":
+          description: User was updated.
+          content:
+            application-json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        "400":
+          description: User with new login already exist.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        "401":
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        "403":
+          description: Forbidden. Admin can update everyone, others can update themselves.
+            Property `role, isBlocked` can update only admin.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        "404":
+          description: User not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        "500":
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+      security:
+        - bearerAuth: []
+  /upload:
+    post:
+      summary: Upload new image to cloudinary API.
+      operationId: uploadNewImage
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/body_2'
+        required: true
+      responses:
+        "201":
+          description: File uploaded.
+          content:
+            application-json:
+              schema:
+                $ref: '#/components/schemas/fileInfo'
+        "400":
+          description: The file is not in the request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        "500":
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+  /:
+    get:
+      summary: Root directory
+      description: The API root directory deplaying a welcome message
+      responses:
+        "200":
+          description: Welcome to Soupify A.K.A
+          content:
+            text/html; charset=utf-8:
+              schema:
+                type: string
+              examples: {}
+  /recipes/:
+    get:
+      tags:
+        - recipes
+      summary: List all recipes
+      operationId: listRecipes
+      parameters:
+        - name: page
+          in: query
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: integer
+            format: int64
+        - name: limit
+          in: query
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RecipeWithId'
+    post:
+      tags:
+        - recipes
+      summary: Create a new recipe.
+      operationId: createRecipe
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Recipe'
+        required: true
+      responses:
+        "201":
+          description: recipe was created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecipeWithId'
+        "400":
+          description: Properties not set.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        "401":
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        "403":
+          description: Forbidden. Only admin can create
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        "500":
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+      security:
+        - bearerAuth: []
+  /recipes/{id}:
+    get:
+      tags:
+        - recipes
+      summary: Get a recipe by {id}.
+      description: Retrive a recipe from database or from spooncaular API with given
+        id according to local parameter. local=true => DB
+      operationId: getDishById
+      parameters:
+        - name: id
+          in: path
+          description: recipe id.
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: integer
+            example: 151
+        - name: local
+          in: query
+          description: recipe id.
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: boolean
+            example: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application-json:
+              schema:
+                $ref: '#/components/schemas/RecipeWithId'
+        "401":
+          description: Unauthorized.
+        "404":
+          description: recipe not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        "500":
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+    put:
+      tags:
+        - recipes
+      summary: Update a recipe.
+      operationId: updateDish
+      parameters:
+        - name: id
+          in: path
+          description: recipe id.
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RecipeWithId'
+        required: true
+      responses:
+        "200":
+          description: recipe was updated.
+          content:
+            application-json:
+              schema:
+                $ref: '#/components/schemas/Recipe'
+        "401":
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        "403":
+          description: Forbidden. Only admin can update
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        "404":
+          description: recipe not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        "500":
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+      security:
+        - bearerAuth: []
+    delete:
+      tags:
+        - recipes
+      summary: Deletes a recipe
+      description: '**Admin** endpoint'
+      operationId: deleteRecipe
+      parameters:
+        - name: id
+          in: path
+          description: Recipe id to delete
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "204":
+          description: OK
+        "401":
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        "403":
+          description: Forbidden. Only admin can update
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        "404":
+          description: recipe not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        "500":
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+      security:
+        - bearerAuth: []
+  /recipes/rand:
+    get:
+      tags:
+        - recipes
+      summary: Display 3 random recipes from Spooncaular API
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RecipeWithId'
+        "404":
+          description: recipe not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        "500":
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+  /recipes/search:
+    get:
+      tags:
+        - recipes
+      summary: Search for recipes from Spooncaular API
+      parameters:
+        - name: query
+          in: query
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: string
+            example: sushi
+        - name: cuisine
+          in: query
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
+            example: Japanese
+        - name: diet
+          in: query
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
+            example: vegetarian
+        - name: intolerances
+          in: query
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
+            example: onion
+        - name: number
+          in: query
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: integer
+            format: int64
+            example: 5
+        - name: instructionsRequired
+          in: query
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: boolean
+            format: int64
+            example: true
+        - name: offset
+          in: query
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: integer
+            format: int16
+            example: 1
+        - name: page
+          in: query
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: integer
+            format: int16
+            example: 1
+        - name: limit
+          in: query
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: integer
+            format: int16
+            example: 2
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RecipeWithId'
+        "404":
+          description: recipe not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        "500":
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+  /recipe/{recipeId}/ingredients/{ingredientId}:
+    put:
+      tags:
+        - recipes
+      summary: Update the amount of ingredient in a recipe
+      description: Update the amount of ingredient in a recipe
+      operationId: updateIngredientAmount
+      parameters:
+        - name: recipeId
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: integer
+            format: int64
+        - name: ingredientId
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        $ref: '#/components/requestBodies/addIngredientToRecipeBody'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IngredientInRecipe'
+        "400":
+          description: Bad request
+        "404":
+          description: Object not found
+      security:
+        - bearerAuth: []
+    post:
+      tags:
+        - recipes
+      summary: Add an ingredient to a recipe
+      description: Add an amount of an ingredient to a given recipe
+      operationId: addIngredientToRecipe
+      parameters:
+        - name: recipeId
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: integer
+            format: int64
+        - name: ingredientId
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        $ref: '#/components/requestBodies/addIngredientToRecipeBody'
+      responses:
+        "201":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IngredientInRecipe'
+        "400":
+          description: Bad request
+        "404":
+          description: Object not found
+      security:
+        - bearerAuth: []
+    delete:
+      tags:
+        - recipes
+      summary: Remove ingredient from a recipe.
+      description: Remove ingredient from a recipe.
+      operationId: deleteIngredientFromRecipe
+      parameters:
+        - name: recipeId
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: integer
+            format: int64
+        - name: ingredientId
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "204":
+          description: OK
+        "404":
+          description: Object not found
+      security:
+        - bearerAuth: []
+  /ingredients:
+    get:
+      tags:
+        - ingredients
+      summary: Get all ingredients
+      operationId: listIngredients
+      parameters:
+        - name: page
+          in: query
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: integer
+            format: int64
+        - name: limit
+          in: query
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/IngredientWithId'
+    post:
+      tags:
+        - ingredients
+      summary: Add a new ingredient
+      operationId: addIngredient
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Ingredient'
+        required: true
+      responses:
+        "201":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IngredientWithId'
+        "400":
+          description: Bad request
+        "401":
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+      security:
+        - bearerAuth: []
+  /ingredient/{ingredientId}:
+    get:
+      tags:
+        - ingredients
+      summary: Get an ingredient with given id.
+      operationId: getIngredientById
+      parameters:
+        - name: ingredientId
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IngredientWithId'
+        "404":
+          description: Object not found
+    put:
+      tags:
+        - ingredients
+      summary: Update an ingredient
+      description: Updates ingredient with given id
+      operationId: updateIngredient
+      parameters:
+        - name: ingredientId
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IngredientWithId'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IngredientWithId'
+        "401":
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        "404":
+          description: Ingredient not found
+      security:
+        - bearerAuth: []
+    delete:
+      tags:
+        - ingredients
+      summary: Delete an igredient
+      operationId: deleteIngredient
+      parameters:
+        - name: ingredientId
+          in: path
+          description: Id of ingredient to be deleted
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "204":
+          description: OK
+        "401":
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+      security:
+        - bearerAuth: []
+  /metadata/info:
+    get:
+      tags:
+        - meta
+      summary: Get all users meta-data
+      description: '**Admin** endpoint'
+      operationId: getAllmeta
+      parameters:
+        - name: page
+          in: query
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: integer
+            format: int64
+        - name: limit
+          in: query
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/metadata'
+        "401":
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        "403":
+          description: Forbidden. Only manager can get all.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+      security:
+        - bearerAuth: []
+  /metadata:
+    get:
+      tags:
+        - meta
+      summary: Get an user metadata with given id.
+      description: Return user current lists.
+      operationId: getMetaById
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/metadata'
+        "401":
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+      security:
+        - bearerAuth: []
+  /metadata/last-seen:
+    get:
+      tags:
+        - meta
+      summary: Get a user's last seen recipes.
+      description: Return user 3 last seen recipes.
+      operationId: lastSeen
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Recipe'
+        "401":
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+      security:
+        - bearerAuth: []
+  /metadata/{list}:
+    get:
+      tags:
+        - meta
+      summary: Get a user recipes's list metadata.
+      operationId: getMealById
+      parameters:
+        - name: list
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            $ref: '#/components/schemas/list'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/metadataList'
+        "401":
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+      security:
+        - bearerAuth: []
+  /metadata/{list}/{recipeId}:
+    post:
+      tags:
+        - meta
+      summary: Add a user  recipes's list iteam metadata with given id.
+      description: 'List is enum '
+      operationId: AddMealById
+      parameters:
+        - name: recipeId
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: integer
+            format: int64
+        - name: list
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            $ref: '#/components/schemas/list'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/metadataList'
+        "401":
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+      security:
+        - bearerAuth: []
+    delete:
+      tags:
+        - meta
+      summary: remove a user list's recipe metadata with given id.
+      operationId: removeMealById
+      parameters:
+        - name: recipeId
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: integer
+            format: int64
+            example: 2
+        - name: list
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            $ref: '#/components/schemas/list'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/metadataList'
+        "401":
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+      security:
+        - bearerAuth: []
+components:
+  schemas:
+    creditionals:
+      required:
+        - login
+        - password
+      type: object
+      properties:
+        login:
+          type: string
+          description: User login for auth or registration
+          example: serfati
+        password:
+          type: string
+          description: Password
+          example: "12345"
+    userUpdatableInfo:
+      type: object
+      properties:
+        login:
+          type: string
+          description: User name
+          example: serfati
+        password:
+          type: string
+          description: Password
+          example: "12345"
+        role:
+          $ref: '#/components/schemas/role'
+        avatar:
+          type: string
+          description: User avatar.
+          format: string
+          nullable: true
+          example: https://giantbomb1.cbsistatic.com/uploads/scale_medium/0/6087/2437349-pikachu.png
+        fullName:
+          type: string
+          description: Real user name
+          nullable: true
+          example: Avihai Serfati
+        email:
+          type: string
+          description: email address
+          example: serfati@gmail.com
+        country:
+          type: string
+          description: User orgin country
+          example: Israel
+        question:
+          type: string
+          description: Question for the   password recovery
+          example: What is the name of the town where you were born?
+        answer:
+          type: string
+          description: Answer for the question for recover password
+          example: Dimona
+    user:
+      type: object
+      properties:
+        id:
+          type: number
+          description: User unique idenifer
+          example: 1
+        login:
+          type: string
+          description: User name
+          example: serfati
+        role:
+          $ref: '#/components/schemas/role'
+        avatar:
+          type: string
+          description: 'User icon. You can get the icon along the path: \files\{avatar}'
+          nullable: true
+          example: https://giantbomb1.cbsistatic.com/uploads/scale_medium/0/6087/2437349-pikachu.png
+        fullName:
+          type: string
+          description: Real user name
+          nullable: true
+          example: Avihai Serfati
+        email:
+          type: string
+          description: email address
+          example: serfati@gmail.com
+        country:
+          type: string
+          description: User orgin country
+          example: Israel
+    metadata:
+      required:
+        - id
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Unique user identifie.
+          example: 12331
+        watched:
+          type: array
+          description: watched recipes ids
+          example:
+            - 667
+            - 12
+            - 98
+          items:
+            type: integer
+        favs:
+          type: array
+          description: favs recipes ids
+          example:
+            - 3001
+            - 2
+            - 115
+          items:
+            type: integer
+        personal:
+          type: array
+          description: personal recipes ids
+          example:
+            - 7
+            - 10
+            - 15
+            - 25
+          items:
+            type: integer
+        meal:
+          type: array
+          description: meal recipes ids
+          example:
+            - 15
+            - 20
+            - 22
+          items:
+            type: integer
+        family:
+          type: array
+          description: user family recipes ids
+          example:
+            - 151
+            - 158
+            - 180
+          items:
+            type: integer
+    metadataList:
+      type: object
+      properties:
+        list:
+          type: array
+          description: watched/favs/meal/personal recipes ids
+          example:
+            - 667
+            - 12
+            - 98
+            - 3001
+            - 15
+          items:
+            type: integer
+    role:
+      type: string
+      description: User role in system. Define user privileges in the system.
+      example: Admin
+      enum:
+        - Admin
+        - Client
+        - Chef
+        - Reviewer
+    list:
+      type: string
+      description: User recipes metadata list in system.
+      example: Admin
+      enum:
+        - favs
+        - watched
+        - meal
+        - personal
+        - family
+    fileInfo:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: file id
+          example: 2123
+        name:
+          type: string
+          description: file id
+          example: newFile.jpg
+        url:
+          type: string
+          description: file url
+          example: image/jpg
+    RecipeWithId:
+      allOf:
+        - $ref: '#/components/schemas/Recipe'
+        - type: object
+          properties:
+            id:
+              type: integer
+              format: int64
+    RecipePreview:
+      required:
+        - aggregate_likes
+        - gluten_free
+        - image
+        - ready_in_minutes
+        - serving
+        - title
+        - vegan
+        - vegetarian
+      type: object
+      properties:
+        title:
+          type: string
+          example: Spaghetti Carbonara
+        ready_in_minutes:
+          type: number
+          example: 25
+        aggregate_likes:
+          type: number
+          example: 1217
+        serving:
+          type: number
+          example: 6
+        vegetarian:
+          type: boolean
+          example: true
+        vegan:
+          type: boolean
+          example: true
+        gluten_free:
+          type: boolean
+          example: false
+        image:
+          type: string
+          example: https://spoonacular.com/recipeImages/535835-556x370.jpg
+    Recipe:
+      required:
+        - aggregate_likes
+        - extended_ingredients
+        - gluten_free
+        - image
+        - instructions
+        - ready_in_minutes
+        - serving
+        - title
+        - vegan
+        - vegetarian
+      type: object
+      properties:
+        title:
+          type: string
+          example: Spaghetti Carbonara
+        ready_in_minutes:
+          type: number
+          example: 25
+        aggregate_likes:
+          type: number
+          example: 1217
+        serving:
+          type: number
+          example: 6
+        vegetarian:
+          type: boolean
+          example: true
+        vegan:
+          type: boolean
+          example: true
+        gluten_free:
+          type: boolean
+          example: false
+        image:
+          type: string
+          example: https://spoonacular.com/recipeImages/535835-556x370.jpg
+        instructions:
+          type: string
+          example: "1. cook meat \n 2. prepare salad"
+        extended_ingredients:
+          type: array
+          items:
+            $ref: '#/components/schemas/IngredientInRecipe'
+    Ingredient:
+      required:
+        - name
+      type: object
+      properties:
+        name:
+          type: string
+          example: flour
+    IngredientWithId:
+      allOf:
+        - $ref: '#/components/schemas/Ingredient'
+        - required:
+            - id
+          type: object
+          properties:
+            id:
+              type: integer
+              format: int64
+    IngredientInRecipe:
+      required:
+        - amount
+        - id
+        - unit
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+          example: sugar
+        amount:
+          type: number
+          format: float
+          example: 2.5
+        unit:
+          type: string
+          example: tablespoon
+    ApiResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Response description.
+    body:
+      required:
+        - answer
+        - login
+      type: object
+      properties:
+        login:
+          type: string
+          description: User Answer for recovery Question
+          example: serfati
+        answer:
+          type: string
+          description: User Answer for recovery Question
+          example: Dimona
+    inline_response_200:
+      type: object
+      properties:
+        new_password:
+          type: string
+          example: Uo3HSq6
+    body_1:
+      required:
+        - login
+      type: object
+      properties:
+        login:
+          type: string
+          description: User Answer for recovery Question
+          example: serfati
+    inline_response_200_1:
+      type: object
+      properties:
+        question:
+          type: string
+          example: What is the name of the town where you were born?
+    body_2:
+      type: object
+      properties:
+        file:
+          type: array
+          items:
+            type: string
+            format: binary
+  requestBodies:
+    addIngredientToRecipeBody:
+      content:
+        application/json:
+          schema:
+            required:
+              - amount
+            type: object
+            properties:
+              amount:
+                type: number
+                format: float
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

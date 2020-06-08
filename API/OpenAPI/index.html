@@ -1,9 +1,7 @@
 <!doctype html>
 <html>
 <head>
-    <title>Soupify™ - food for everyone!</title>
-    <link href="https://nerdychefs.com/wp-content/uploads/2020/04/cropped-chefs_logo_FAVICON.png" rel="shortcut icon"
-          type="image/png"/>
+    <title>Soupify™</title>
     <style type="text/css">
         body {
             font-family: Trebuchet MS, sans-serif;
@@ -296,26 +294,13 @@
 </ul>
 <h4><a href="#Meta">Meta</a></h4>
 <ul>
-    <li><a href="#addFavsById"><code><span class="http-method">post</span> /metadata/favs/{recipeId}</code></a></li>
-    <li><a href="#addMealById"><code><span class="http-method">post</span> /metadata/meal/{recipeId}</code></a></li>
-    <li><a href="#addPersonalById"><code><span class="http-method">post</span> /metadata/personal/{recipeId}</code></a>
-    </li>
-    <li><a href="#addWatchedById"><code><span class="http-method">post</span> /metadata/watched/{recipeId}</code></a>
-    </li>
+    <li><a href="#addMealById"><code><span class="http-method">post</span> /metadata/{list}/{recipeId}</code></a></li>
     <li><a href="#getAllmeta"><code><span class="http-method">get</span> /metadata/info</code></a></li>
-    <li><a href="#getFavsById"><code><span class="http-method">get</span> /metadata/favs</code></a></li>
-    <li><a href="#getMealById"><code><span class="http-method">get</span> /metadata/meal</code></a></li>
+    <li><a href="#getMealById"><code><span class="http-method">get</span> /metadata/{list}</code></a></li>
     <li><a href="#getMetaById"><code><span class="http-method">get</span> /metadata</code></a></li>
-    <li><a href="#getPersonalById"><code><span class="http-method">get</span> /metadata/personal</code></a></li>
-    <li><a href="#getWatchedById"><code><span class="http-method">get</span> /metadata/watched</code></a></li>
-    <li><a href="#removeFavsById"><code><span class="http-method">delete</span> /metadata/favs/{recipeId}</code></a>
+    <li><a href="#lastSeen"><code><span class="http-method">get</span> /metadata/last-seen</code></a></li>
+    <li><a href="#removeMealById"><code><span class="http-method">delete</span> /metadata/{list}/{recipeId}</code></a>
     </li>
-    <li><a href="#removeMealById"><code><span class="http-method">delete</span> /metadata/meal/{recipeId}</code></a>
-    </li>
-    <li><a href="#removePersonalById"><code><span class="http-method">delete</span> /metadata/personal/{recipeId}</code></a>
-    </li>
-    <li><a href="#removeWatchedById"><code><span class="http-method">delete</span>
-        /metadata/watched/{recipeId}</code></a></li>
 </ul>
 <h4><a href="#Recipes">Recipes</a></h4>
 <ul>
@@ -327,7 +312,6 @@
     <li><a href="#deleteRecipe"><code><span class="http-method">delete</span> /recipes/{id}</code></a></li>
     <li><a href="#getDishById"><code><span class="http-method">get</span> /recipes/{id}</code></a></li>
     <li><a href="#listRecipes"><code><span class="http-method">get</span> /recipes/</code></a></li>
-    <li><a href="#recipesPreviewGet"><code><span class="http-method">get</span> /recipes/preview</code></a></li>
     <li><a href="#recipesRandGet"><code><span class="http-method">get</span> /recipes/rand</code></a></li>
     <li><a href="#recipesSearchGet"><code><span class="http-method">get</span> /recipes/search</code></a></li>
     <li><a href="#updateDish"><code><span class="http-method">put</span> /recipes/{id}</code></a></li>
@@ -367,7 +351,7 @@
   "role" : "Admin",
   "fullName" : "Avihai Serfati",
   "id" : 1,
-  "avatar" : 5123,
+  "avatar" : "https://giantbomb1.cbsistatic.com/uploads/scale_medium/0/6087/2437349-pikachu.png",
   "login" : "serfati",
   "email" : "serfati@gmail.com"
 }</code></pre>
@@ -431,7 +415,7 @@
   "role" : "Admin",
   "fullName" : "Avihai Serfati",
   "id" : 1,
-  "avatar" : 5123,
+  "avatar" : "https://giantbomb1.cbsistatic.com/uploads/scale_medium/0/6087/2437349-pikachu.png",
   "login" : "serfati",
   "email" : "serfati@gmail.com"
 }</code></pre>
@@ -524,7 +508,7 @@
                 class="http-method">put</span> /authenticate/password-reset</code></pre>
     </div>
     <div class="method-summary">Reset user password by Q&amp;amp;A. (<span class="nickname">resetPassword</span>)</div>
-    <div class="method-notes">A user sends his answer to question restore his account.</div>
+    <div class="method-notes">A user sends his answer on question to restore his account.</div>
 
 
     <h3 class="field-label">Consumes</h3>
@@ -715,6 +699,9 @@
     <h4 class="field-label">400</h4>
     Bad request
     <a href="#"></a>
+    <h4 class="field-label">401</h4>
+    Unauthorized.
+    <a href="#ApiResponse">ApiResponse</a>
 </div> <!-- method -->
 <hr/>
 <div class="method"><a name="deleteIngredient"></a>
@@ -738,13 +725,20 @@
     <!--Todo: process Response Object and its headers, schema, examples -->
 
 
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+        <li><code>application/json</code></li>
+    </ul>
+
     <h3 class="field-label">Responses</h3>
     <h4 class="field-label">204</h4>
     OK
     <a href="#"></a>
-    <h4 class="field-label">404</h4>
-    Object not found
-    <a href="#"></a>
+    <h4 class="field-label">401</h4>
+    Unauthorized.
+    <a href="#ApiResponse">ApiResponse</a>
 </div> <!-- method -->
 <hr/>
 <div class="method"><a name="getIngredientById"></a>
@@ -888,79 +882,33 @@
     <h4 class="field-label">200</h4>
     OK
     <a href="#IngredientWithId">IngredientWithId</a>
-    <h4 class="field-label">400</h4>
-    Bad request
-    <a href="#"></a>
+    <h4 class="field-label">401</h4>
+    Unauthorized.
+    <a href="#ApiResponse">ApiResponse</a>
     <h4 class="field-label">404</h4>
     Ingredient not found
     <a href="#"></a>
 </div> <!-- method -->
 <hr/>
 <h1><a name="Meta">Meta</a></h1>
-<div class="method"><a name="addFavsById"></a>
-    <div class="method-path">
-        <a class="up" href="#__Methods">Up</a>
-        <pre class="post"><code class="huge"><span
-                class="http-method">post</span> /metadata/favs/{recipeId}</code></pre>
-    </div>
-    <div class="method-summary">Add an user favs recipes metadata with given id. (<span
-            class="nickname">addFavsById</span>)
-    </div>
-    <div class="method-notes"></div>
-
-    <h3 class="field-label">Path parameters</h3>
-    <div class="field-items">
-        <div class="param">recipeId (required)</div>
-
-        <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; format: int64</div>
-    </div>  <!-- field-items -->
-
-
-    <h3 class="field-label">Return type</h3>
-    <div class="return-type">
-        <a href="#metadataList">metadataList</a>
-
-    </div>
-
-    <!--Todo: process Response Object and its headers, schema, examples -->
-
-    <h3 class="field-label">Example data</h3>
-    <div class="example-data-content-type">Content-Type: application/json</div>
-    <pre class="example"><code>{
-  "list" : [ 667, 12, 98, 3001, 15 ]
-}</code></pre>
-
-    <h3 class="field-label">Produces</h3>
-    This API call produces the following media types according to the <span class="header">Accept</span> request header;
-    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
-    <ul>
-        <li><code>application/json</code></li>
-    </ul>
-
-    <h3 class="field-label">Responses</h3>
-    <h4 class="field-label">200</h4>
-    OK
-    <a href="#metadataList">metadataList</a>
-    <h4 class="field-label">404</h4>
-    Object not found
-    <a href="#"></a>
-</div> <!-- method -->
-<hr/>
 <div class="method"><a name="addMealById"></a>
     <div class="method-path">
         <a class="up" href="#__Methods">Up</a>
         <pre class="post"><code class="huge"><span
-                class="http-method">post</span> /metadata/meal/{recipeId}</code></pre>
+                class="http-method">post</span> /metadata/{list}/{recipeId}</code></pre>
     </div>
-    <div class="method-summary">Add an user meal&#x27;s recipes metadata with given id. (<span class="nickname">addMealById</span>)
+    <div class="method-summary">Add a user recipes&#x27;s list iteam metadata with given id. (<span class="nickname">addMealById</span>)
     </div>
-    <div class="method-notes"></div>
+    <div class="method-notes">List is enum</div>
 
     <h3 class="field-label">Path parameters</h3>
     <div class="field-items">
         <div class="param">recipeId (required)</div>
 
         <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; format: int64</div>
+        <div class="param">list (required)</div>
+
+        <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash;</div>
     </div>  <!-- field-items -->
 
 
@@ -989,105 +937,9 @@
     <h4 class="field-label">200</h4>
     OK
     <a href="#metadataList">metadataList</a>
-    <h4 class="field-label">404</h4>
-    Object not found
-    <a href="#"></a>
-</div> <!-- method -->
-<hr/>
-<div class="method"><a name="addPersonalById"></a>
-    <div class="method-path">
-        <a class="up" href="#__Methods">Up</a>
-        <pre class="post"><code class="huge"><span class="http-method">post</span> /metadata/personal/{recipeId}</code></pre>
-    </div>
-    <div class="method-summary">Add an user personal metadata with given id. (<span
-            class="nickname">addPersonalById</span>)
-    </div>
-    <div class="method-notes"></div>
-
-    <h3 class="field-label">Path parameters</h3>
-    <div class="field-items">
-        <div class="param">recipeId (required)</div>
-
-        <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; format: int64</div>
-    </div>  <!-- field-items -->
-
-
-    <h3 class="field-label">Return type</h3>
-    <div class="return-type">
-        <a href="#metadataList">metadataList</a>
-
-    </div>
-
-    <!--Todo: process Response Object and its headers, schema, examples -->
-
-    <h3 class="field-label">Example data</h3>
-    <div class="example-data-content-type">Content-Type: application/json</div>
-    <pre class="example"><code>{
-  "list" : [ 667, 12, 98, 3001, 15 ]
-}</code></pre>
-
-    <h3 class="field-label">Produces</h3>
-    This API call produces the following media types according to the <span class="header">Accept</span> request header;
-    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
-    <ul>
-        <li><code>application/json</code></li>
-    </ul>
-
-    <h3 class="field-label">Responses</h3>
-    <h4 class="field-label">200</h4>
-    OK
-    <a href="#metadataList">metadataList</a>
-    <h4 class="field-label">404</h4>
-    Object not found
-    <a href="#"></a>
-</div> <!-- method -->
-<hr/>
-<div class="method"><a name="addWatchedById"></a>
-    <div class="method-path">
-        <a class="up" href="#__Methods">Up</a>
-        <pre class="post"><code class="huge"><span
-                class="http-method">post</span> /metadata/watched/{recipeId}</code></pre>
-    </div>
-    <div class="method-summary">Add an user watched recipes metadata with given id. (<span class="nickname">addWatchedById</span>)
-    </div>
-    <div class="method-notes"></div>
-
-    <h3 class="field-label">Path parameters</h3>
-    <div class="field-items">
-        <div class="param">recipeId (required)</div>
-
-        <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; format: int64</div>
-    </div>  <!-- field-items -->
-
-
-    <h3 class="field-label">Return type</h3>
-    <div class="return-type">
-        <a href="#metadataList">metadataList</a>
-
-    </div>
-
-    <!--Todo: process Response Object and its headers, schema, examples -->
-
-    <h3 class="field-label">Example data</h3>
-    <div class="example-data-content-type">Content-Type: application/json</div>
-    <pre class="example"><code>{
-  "list" : [ 667, 12, 98, 3001, 15 ]
-}</code></pre>
-
-    <h3 class="field-label">Produces</h3>
-    This API call produces the following media types according to the <span class="header">Accept</span> request header;
-    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
-    <ul>
-        <li><code>application/json</code></li>
-    </ul>
-
-    <h3 class="field-label">Responses</h3>
-    <h4 class="field-label">200</h4>
-    OK
-    <a href="#metadataList">metadataList</a>
-    <h4 class="field-label">404</h4>
-    Object not found
-    <a href="#"></a>
+    <h4 class="field-label">401</h4>
+    Unauthorized.
+    <a href="#ApiResponse">ApiResponse</a>
 </div> <!-- method -->
 <hr/>
 <div class="method"><a name="getAllmeta"></a>
@@ -1121,17 +973,19 @@
     <h3 class="field-label">Example data</h3>
     <div class="example-data-content-type">Content-Type: application/json</div>
     <pre class="example"><code>[ {
-  "meal" : [ 7 ],
+  "meal" : [ 15, 20, 22 ],
   "watched" : [ 667, 12, 98 ],
   "favs" : [ 3001, 2, 115 ],
-  "personal" : [ ],
-  "id" : 12331
+  "personal" : [ 7, 10, 15, 25 ],
+  "id" : 12331,
+  "family" : [ 151, 158, 180 ]
 }, {
-  "meal" : [ 7 ],
+  "meal" : [ 15, 20, 22 ],
   "watched" : [ 667, 12, 98 ],
   "favs" : [ 3001, 2, 115 ],
-  "personal" : [ ],
-  "id" : 12331
+  "personal" : [ 7, 10, 15, 25 ],
+  "id" : 12331,
+  "family" : [ 151, 158, 180 ]
 } ]</code></pre>
 
     <h3 class="field-label">Produces</h3>
@@ -1145,57 +999,32 @@
     <h4 class="field-label">200</h4>
     OK
 
-</div> <!-- method -->
-<hr/>
-<div class="method"><a name="getFavsById"></a>
-    <div class="method-path">
-        <a class="up" href="#__Methods">Up</a>
-        <pre class="get"><code class="huge"><span class="http-method">get</span> /metadata/favs</code></pre>
-    </div>
-    <div class="method-summary">Get an user favs recipes metadata with given id. (<span
-            class="nickname">getFavsById</span>)
-    </div>
-    <div class="method-notes"></div>
-
-
-    <h3 class="field-label">Return type</h3>
-    <div class="return-type">
-        <a href="#metadataList">metadataList</a>
-
-    </div>
-
-    <!--Todo: process Response Object and its headers, schema, examples -->
-
-    <h3 class="field-label">Example data</h3>
-    <div class="example-data-content-type">Content-Type: application/json</div>
-    <pre class="example"><code>{
-  "list" : [ 667, 12, 98, 3001, 15 ]
-}</code></pre>
-
-    <h3 class="field-label">Produces</h3>
-    This API call produces the following media types according to the <span class="header">Accept</span> request header;
-    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
-    <ul>
-        <li><code>application/json</code></li>
-    </ul>
-
-    <h3 class="field-label">Responses</h3>
-    <h4 class="field-label">200</h4>
-    OK
-    <a href="#metadataList">metadataList</a>
-    <h4 class="field-label">404</h4>
-    Object not found
-    <a href="#"></a>
+    <h4 class="field-label">401</h4>
+    Unauthorized.
+    <a href="#ApiResponse">ApiResponse</a>
+    <h4 class="field-label">403</h4>
+    Forbidden. Only manager can get all.
+    <a href="#ApiResponse">ApiResponse</a>
+    <h4 class="field-label">500</h4>
+    Internal server error
+    <a href="#ApiResponse">ApiResponse</a>
 </div> <!-- method -->
 <hr/>
 <div class="method"><a name="getMealById"></a>
     <div class="method-path">
         <a class="up" href="#__Methods">Up</a>
-        <pre class="get"><code class="huge"><span class="http-method">get</span> /metadata/meal</code></pre>
+        <pre class="get"><code class="huge"><span class="http-method">get</span> /metadata/{list}</code></pre>
     </div>
-    <div class="method-summary">Get an user meal&#x27;s recipes metadata with given id. (<span class="nickname">getMealById</span>)
+    <div class="method-summary">Get a user recipes&#x27;s list metadata. (<span class="nickname">getMealById</span>)
     </div>
     <div class="method-notes"></div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+        <div class="param">list (required)</div>
+
+        <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash;</div>
+    </div>  <!-- field-items -->
 
 
     <h3 class="field-label">Return type</h3>
@@ -1223,9 +1052,9 @@
     <h4 class="field-label">200</h4>
     OK
     <a href="#metadataList">metadataList</a>
-    <h4 class="field-label">404</h4>
-    Object not found
-    <a href="#"></a>
+    <h4 class="field-label">401</h4>
+    Unauthorized.
+    <a href="#ApiResponse">ApiResponse</a>
 </div> <!-- method -->
 <hr/>
 <div class="method"><a name="getMetaById"></a>
@@ -1234,7 +1063,7 @@
         <pre class="get"><code class="huge"><span class="http-method">get</span> /metadata</code></pre>
     </div>
     <div class="method-summary">Get an user metadata with given id. (<span class="nickname">getMetaById</span>)</div>
-    <div class="method-notes"></div>
+    <div class="method-notes">Return user current lists.</div>
 
 
     <h3 class="field-label">Return type</h3>
@@ -1248,11 +1077,12 @@
     <h3 class="field-label">Example data</h3>
     <div class="example-data-content-type">Content-Type: application/json</div>
     <pre class="example"><code>{
-  "meal" : [ 7 ],
+  "meal" : [ 15, 20, 22 ],
   "watched" : [ 667, 12, 98 ],
   "favs" : [ 3001, 2, 115 ],
-  "personal" : [ ],
-  "id" : 12331
+  "personal" : [ 7, 10, 15, 25 ],
+  "id" : 12331,
+  "family" : [ 151, 158, 180 ]
 }</code></pre>
 
     <h3 class="field-label">Produces</h3>
@@ -1266,25 +1096,23 @@
     <h4 class="field-label">200</h4>
     OK
     <a href="#metadata">metadata</a>
-    <h4 class="field-label">404</h4>
-    Object not found
-    <a href="#"></a>
+    <h4 class="field-label">401</h4>
+    Unauthorized.
+    <a href="#ApiResponse">ApiResponse</a>
 </div> <!-- method -->
 <hr/>
-<div class="method"><a name="getPersonalById"></a>
+<div class="method"><a name="lastSeen"></a>
     <div class="method-path">
         <a class="up" href="#__Methods">Up</a>
-        <pre class="get"><code class="huge"><span class="http-method">get</span> /metadata/personal</code></pre>
+        <pre class="get"><code class="huge"><span class="http-method">get</span> /metadata/last-seen</code></pre>
     </div>
-    <div class="method-summary">Get an user personal metadata with given id. (<span
-            class="nickname">getPersonalById</span>)
-    </div>
-    <div class="method-notes"></div>
+    <div class="method-summary">Get a user&#x27;s last seen recipes. (<span class="nickname">lastSeen</span>)</div>
+    <div class="method-notes">Return user 3 last seen recipes.</div>
 
 
     <h3 class="field-label">Return type</h3>
     <div class="return-type">
-        <a href="#metadataList">metadataList</a>
+        array[<a href="#Recipe">Recipe</a>]
 
     </div>
 
@@ -1292,9 +1120,49 @@
 
     <h3 class="field-label">Example data</h3>
     <div class="example-data-content-type">Content-Type: application/json</div>
-    <pre class="example"><code>{
-  "list" : [ 667, 12, 98, 3001, 15 ]
-}</code></pre>
+    <pre class="example"><code>[ {
+  "image" : "https://spoonacular.com/recipeImages/535835-556x370.jpg",
+  "instructions" : "1. cook meat \n 2. prepare salad",
+  "ready_in_minutes" : 25,
+  "vegetarian" : true,
+  "aggregate_likes" : 1217,
+  "vegan" : true,
+  "title" : "Spaghetti Carbonara",
+  "extended_ingredients" : [ {
+    "amount" : 2.5,
+    "unit" : "tablespoon",
+    "name" : "sugar",
+    "id" : 0
+  }, {
+    "amount" : 2.5,
+    "unit" : "tablespoon",
+    "name" : "sugar",
+    "id" : 0
+  } ],
+  "gluten_free" : false,
+  "serving" : 6
+}, {
+  "image" : "https://spoonacular.com/recipeImages/535835-556x370.jpg",
+  "instructions" : "1. cook meat \n 2. prepare salad",
+  "ready_in_minutes" : 25,
+  "vegetarian" : true,
+  "aggregate_likes" : 1217,
+  "vegan" : true,
+  "title" : "Spaghetti Carbonara",
+  "extended_ingredients" : [ {
+    "amount" : 2.5,
+    "unit" : "tablespoon",
+    "name" : "sugar",
+    "id" : 0
+  }, {
+    "amount" : 2.5,
+    "unit" : "tablespoon",
+    "name" : "sugar",
+    "id" : 0
+  } ],
+  "gluten_free" : false,
+  "serving" : 6
+} ]</code></pre>
 
     <h3 class="field-label">Produces</h3>
     This API call produces the following media types according to the <span class="header">Accept</span> request header;
@@ -1306,105 +1174,19 @@
     <h3 class="field-label">Responses</h3>
     <h4 class="field-label">200</h4>
     OK
-    <a href="#metadataList">metadataList</a>
-    <h4 class="field-label">404</h4>
-    Object not found
-    <a href="#"></a>
-</div> <!-- method -->
-<hr/>
-<div class="method"><a name="getWatchedById"></a>
-    <div class="method-path">
-        <a class="up" href="#__Methods">Up</a>
-        <pre class="get"><code class="huge"><span class="http-method">get</span> /metadata/watched</code></pre>
-    </div>
-    <div class="method-summary">Get an user watched recipes metadata with given id. (<span class="nickname">getWatchedById</span>)
-    </div>
-    <div class="method-notes"></div>
 
-
-    <h3 class="field-label">Return type</h3>
-    <div class="return-type">
-        <a href="#metadataList">metadataList</a>
-
-    </div>
-
-    <!--Todo: process Response Object and its headers, schema, examples -->
-
-    <h3 class="field-label">Example data</h3>
-    <div class="example-data-content-type">Content-Type: application/json</div>
-    <pre class="example"><code>{
-  "list" : [ 667, 12, 98, 3001, 15 ]
-}</code></pre>
-
-    <h3 class="field-label">Produces</h3>
-    This API call produces the following media types according to the <span class="header">Accept</span> request header;
-    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
-    <ul>
-        <li><code>application/json</code></li>
-    </ul>
-
-    <h3 class="field-label">Responses</h3>
-    <h4 class="field-label">200</h4>
-    OK
-    <a href="#metadataList">metadataList</a>
-    <h4 class="field-label">404</h4>
-    Object not found
-    <a href="#"></a>
-</div> <!-- method -->
-<hr/>
-<div class="method"><a name="removeFavsById"></a>
-    <div class="method-path">
-        <a class="up" href="#__Methods">Up</a>
-        <pre class="delete"><code class="huge"><span class="http-method">delete</span> /metadata/favs/{recipeId}</code></pre>
-    </div>
-    <div class="method-summary">remove an user favs recipes metadata with given id. (<span class="nickname">removeFavsById</span>)
-    </div>
-    <div class="method-notes"></div>
-
-    <h3 class="field-label">Path parameters</h3>
-    <div class="field-items">
-        <div class="param">recipeId (required)</div>
-
-        <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; format: int64</div>
-    </div>  <!-- field-items -->
-
-
-    <h3 class="field-label">Return type</h3>
-    <div class="return-type">
-        <a href="#metadataList">metadataList</a>
-
-    </div>
-
-    <!--Todo: process Response Object and its headers, schema, examples -->
-
-    <h3 class="field-label">Example data</h3>
-    <div class="example-data-content-type">Content-Type: application/json</div>
-    <pre class="example"><code>{
-  "list" : [ 667, 12, 98, 3001, 15 ]
-}</code></pre>
-
-    <h3 class="field-label">Produces</h3>
-    This API call produces the following media types according to the <span class="header">Accept</span> request header;
-    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
-    <ul>
-        <li><code>application/json</code></li>
-    </ul>
-
-    <h3 class="field-label">Responses</h3>
-    <h4 class="field-label">200</h4>
-    OK
-    <a href="#metadataList">metadataList</a>
-    <h4 class="field-label">404</h4>
-    Object not found
-    <a href="#"></a>
+    <h4 class="field-label">401</h4>
+    Unauthorized.
+    <a href="#ApiResponse">ApiResponse</a>
 </div> <!-- method -->
 <hr/>
 <div class="method"><a name="removeMealById"></a>
     <div class="method-path">
         <a class="up" href="#__Methods">Up</a>
-        <pre class="delete"><code class="huge"><span class="http-method">delete</span> /metadata/meal/{recipeId}</code></pre>
+        <pre class="delete"><code class="huge"><span
+                class="http-method">delete</span> /metadata/{list}/{recipeId}</code></pre>
     </div>
-    <div class="method-summary">remove an user meal&#x27;s recipes metadata with given id. (<span class="nickname">removeMealById</span>)
+    <div class="method-summary">remove a user list&#x27;s recipe metadata with given id. (<span class="nickname">removeMealById</span>)
     </div>
     <div class="method-notes"></div>
 
@@ -1413,6 +1195,9 @@
         <div class="param">recipeId (required)</div>
 
         <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; format: int64</div>
+        <div class="param">list (required)</div>
+
+        <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash;</div>
     </div>  <!-- field-items -->
 
 
@@ -1441,105 +1226,9 @@
     <h4 class="field-label">200</h4>
     OK
     <a href="#metadataList">metadataList</a>
-    <h4 class="field-label">404</h4>
-    Object not found
-    <a href="#"></a>
-</div> <!-- method -->
-<hr/>
-<div class="method"><a name="removePersonalById"></a>
-    <div class="method-path">
-        <a class="up" href="#__Methods">Up</a>
-        <pre class="delete"><code class="huge"><span
-                class="http-method">delete</span> /metadata/personal/{recipeId}</code></pre>
-    </div>
-    <div class="method-summary">remove an user personal metadata with given id. (<span class="nickname">removePersonalById</span>)
-    </div>
-    <div class="method-notes"></div>
-
-    <h3 class="field-label">Path parameters</h3>
-    <div class="field-items">
-        <div class="param">recipeId (required)</div>
-
-        <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; format: int64</div>
-    </div>  <!-- field-items -->
-
-
-    <h3 class="field-label">Return type</h3>
-    <div class="return-type">
-        <a href="#metadataList">metadataList</a>
-
-    </div>
-
-    <!--Todo: process Response Object and its headers, schema, examples -->
-
-    <h3 class="field-label">Example data</h3>
-    <div class="example-data-content-type">Content-Type: application/json</div>
-    <pre class="example"><code>{
-  "list" : [ 667, 12, 98, 3001, 15 ]
-}</code></pre>
-
-    <h3 class="field-label">Produces</h3>
-    This API call produces the following media types according to the <span class="header">Accept</span> request header;
-    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
-    <ul>
-        <li><code>application/json</code></li>
-    </ul>
-
-    <h3 class="field-label">Responses</h3>
-    <h4 class="field-label">200</h4>
-    OK
-    <a href="#metadataList">metadataList</a>
-    <h4 class="field-label">404</h4>
-    Object not found
-    <a href="#"></a>
-</div> <!-- method -->
-<hr/>
-<div class="method"><a name="removeWatchedById"></a>
-    <div class="method-path">
-        <a class="up" href="#__Methods">Up</a>
-        <pre class="delete"><code class="huge"><span
-                class="http-method">delete</span> /metadata/watched/{recipeId}</code></pre>
-    </div>
-    <div class="method-summary">remove an user watched recipes metadata with given id. (<span class="nickname">removeWatchedById</span>)
-    </div>
-    <div class="method-notes">&lt;strong&gt;Admin&lt;/strong&gt; endpoint</div>
-
-    <h3 class="field-label">Path parameters</h3>
-    <div class="field-items">
-        <div class="param">recipeId (required)</div>
-
-        <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; format: int64</div>
-    </div>  <!-- field-items -->
-
-
-    <h3 class="field-label">Return type</h3>
-    <div class="return-type">
-        <a href="#metadataList">metadataList</a>
-
-    </div>
-
-    <!--Todo: process Response Object and its headers, schema, examples -->
-
-    <h3 class="field-label">Example data</h3>
-    <div class="example-data-content-type">Content-Type: application/json</div>
-    <pre class="example"><code>{
-  "list" : [ 667, 12, 98, 3001, 15 ]
-}</code></pre>
-
-    <h3 class="field-label">Produces</h3>
-    This API call produces the following media types according to the <span class="header">Accept</span> request header;
-    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
-    <ul>
-        <li><code>application/json</code></li>
-    </ul>
-
-    <h3 class="field-label">Responses</h3>
-    <h4 class="field-label">200</h4>
-    OK
-    <a href="#metadataList">metadataList</a>
-    <h4 class="field-label">404</h4>
-    Object not found
-    <a href="#"></a>
+    <h4 class="field-label">401</h4>
+    Unauthorized.
+    <a href="#ApiResponse">ApiResponse</a>
 </div> <!-- method -->
 <hr/>
 <h1><a name="Recipes">Recipes</a></h1>
@@ -1756,13 +1445,23 @@
         <pre class="get"><code class="huge"><span class="http-method">get</span> /recipes/{id}</code></pre>
     </div>
     <div class="method-summary">Get a recipe by {id}. (<span class="nickname">getDishById</span>)</div>
-    <div class="method-notes"></div>
+    <div class="method-notes">Retrive a recipe from database or from spooncaular API with given id according to local
+        parameter. local&#x3D;true &#x3D;&amp;gt; DB
+    </div>
 
     <h3 class="field-label">Path parameters</h3>
     <div class="field-items">
         <div class="param">id (required)</div>
 
         <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; recipe id.</div>
+    </div>  <!-- field-items -->
+
+
+    <h3 class="field-label">Query parameters</h3>
+    <div class="field-items">
+        <div class="param">local (optional)</div>
+
+        <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; recipe id.</div>
     </div>  <!-- field-items -->
 
 
@@ -1783,21 +1482,22 @@
     the media type will be conveyed by the <span class="header">Content-Type</span> response header.
     <ul>
         <li><code>application-json</code></li>
+        <li><code>application/json</code></li>
     </ul>
 
     <h3 class="field-label">Responses</h3>
     <h4 class="field-label">200</h4>
-    recipe.
+    OK
     <a href="#RecipeWithId">RecipeWithId</a>
     <h4 class="field-label">401</h4>
     Unauthorized.
     <a href="#"></a>
     <h4 class="field-label">404</h4>
-    recipe not found by id.
-    <a href="#"></a>
+    recipe not found.
+    <a href="#ApiResponse">ApiResponse</a>
     <h4 class="field-label">500</h4>
     Internal Server Error.
-    <a href="#"></a>
+    <a href="#ApiResponse">ApiResponse</a>
 </div> <!-- method -->
 <hr/>
 <div class="method"><a name="listRecipes"></a>
@@ -1845,72 +1545,6 @@
 
 </div> <!-- method -->
 <hr/>
-<div class="method"><a name="recipesPreviewGet"></a>
-    <div class="method-path">
-        <a class="up" href="#__Methods">Up</a>
-        <pre class="get"><code class="huge"><span class="http-method">get</span> /recipes/preview</code></pre>
-    </div>
-    <div class="method-summary">Display recipe preview info about specific recipe (<span class="nickname">recipesPreviewGet</span>)
-    </div>
-    <div class="method-notes"></div>
-
-    <h3 class="field-label">Path parameters</h3>
-    <div class="field-items">
-        <div class="param">recipeId (required)</div>
-
-        <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; format: int64</div>
-    </div>  <!-- field-items -->
-
-
-    <h3 class="field-label">Return type</h3>
-    <div class="return-type">
-        array[<a href="#RecipePreview">RecipePreview</a>]
-
-    </div>
-
-    <!--Todo: process Response Object and its headers, schema, examples -->
-
-    <h3 class="field-label">Example data</h3>
-    <div class="example-data-content-type">Content-Type: application/json</div>
-    <pre class="example"><code>[ {
-  "image" : "https://spoonacular.com/recipeImages/535835-556x370.jpg",
-  "ready_in_minutes" : 25,
-  "vegetarian" : true,
-  "aggregate_likes" : 1217,
-  "vegan" : true,
-  "title" : "Spaghetti Carbonara",
-  "gluten_free" : false,
-  "serving" : 6
-}, {
-  "image" : "https://spoonacular.com/recipeImages/535835-556x370.jpg",
-  "ready_in_minutes" : 25,
-  "vegetarian" : true,
-  "aggregate_likes" : 1217,
-  "vegan" : true,
-  "title" : "Spaghetti Carbonara",
-  "gluten_free" : false,
-  "serving" : 6
-} ]</code></pre>
-
-    <h3 class="field-label">Produces</h3>
-    This API call produces the following media types according to the <span class="header">Accept</span> request header;
-    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
-    <ul>
-        <li><code>application/json</code></li>
-    </ul>
-
-    <h3 class="field-label">Responses</h3>
-    <h4 class="field-label">200</h4>
-    OK
-
-    <h4 class="field-label">404</h4>
-    recipe not found.
-    <a href="#ApiResponse">ApiResponse</a>
-    <h4 class="field-label">500</h4>
-    Internal Server Error.
-    <a href="#ApiResponse">ApiResponse</a>
-</div> <!-- method -->
-<hr/>
 <div class="method"><a name="recipesRandGet"></a>
     <div class="method-path">
         <a class="up" href="#__Methods">Up</a>
@@ -1924,7 +1558,7 @@
 
     <h3 class="field-label">Return type</h3>
     <div class="return-type">
-        array[<a href="#Recipe">Recipe</a>]
+        array[<a href="#RecipeWithId">RecipeWithId</a>]
 
     </div>
 
@@ -1932,49 +1566,7 @@
 
     <h3 class="field-label">Example data</h3>
     <div class="example-data-content-type">Content-Type: application/json</div>
-    <pre class="example"><code>[ {
-  "image" : "https://spoonacular.com/recipeImages/535835-556x370.jpg",
-  "instructions" : "1. cook meat \n 2. prepare salad",
-  "ready_in_minutes" : 25,
-  "vegetarian" : true,
-  "aggregate_likes" : 1217,
-  "vegan" : true,
-  "title" : "Spaghetti Carbonara",
-  "extended_ingredients" : [ {
-    "amount" : 2.5,
-    "unit" : "tablespoon",
-    "name" : "sugar",
-    "id" : 0
-  }, {
-    "amount" : 2.5,
-    "unit" : "tablespoon",
-    "name" : "sugar",
-    "id" : 0
-  } ],
-  "gluten_free" : false,
-  "serving" : 6
-}, {
-  "image" : "https://spoonacular.com/recipeImages/535835-556x370.jpg",
-  "instructions" : "1. cook meat \n 2. prepare salad",
-  "ready_in_minutes" : 25,
-  "vegetarian" : true,
-  "aggregate_likes" : 1217,
-  "vegan" : true,
-  "title" : "Spaghetti Carbonara",
-  "extended_ingredients" : [ {
-    "amount" : 2.5,
-    "unit" : "tablespoon",
-    "name" : "sugar",
-    "id" : 0
-  }, {
-    "amount" : 2.5,
-    "unit" : "tablespoon",
-    "name" : "sugar",
-    "id" : 0
-  } ],
-  "gluten_free" : false,
-  "serving" : 6
-} ]</code></pre>
+    <pre class="example"><code>[ "", "" ]</code></pre>
 
     <h3 class="field-label">Produces</h3>
     This API call produces the following media types according to the <span class="header">Accept</span> request header;
@@ -2264,7 +1856,7 @@
   "role" : "Admin",
   "fullName" : "Avihai Serfati",
   "id" : 1,
-  "avatar" : 5123,
+  "avatar" : "https://giantbomb1.cbsistatic.com/uploads/scale_medium/0/6087/2437349-pikachu.png",
   "login" : "serfati",
   "email" : "serfati@gmail.com"
 }</code></pre>
@@ -2330,7 +1922,7 @@
   "role" : "Admin",
   "fullName" : "Avihai Serfati",
   "id" : 1,
-  "avatar" : 5123,
+  "avatar" : "https://giantbomb1.cbsistatic.com/uploads/scale_medium/0/6087/2437349-pikachu.png",
   "login" : "serfati",
   "email" : "serfati@gmail.com"
 }, {
@@ -2338,7 +1930,7 @@
   "role" : "Admin",
   "fullName" : "Avihai Serfati",
   "id" : 1,
-  "avatar" : 5123,
+  "avatar" : "https://giantbomb1.cbsistatic.com/uploads/scale_medium/0/6087/2437349-pikachu.png",
   "login" : "serfati",
   "email" : "serfati@gmail.com"
 } ]</code></pre>
@@ -2397,7 +1989,7 @@
   "role" : "Admin",
   "fullName" : "Avihai Serfati",
   "id" : 1,
-  "avatar" : 5123,
+  "avatar" : "https://giantbomb1.cbsistatic.com/uploads/scale_medium/0/6087/2437349-pikachu.png",
   "login" : "serfati",
   "email" : "serfati@gmail.com"
 }</code></pre>
@@ -2518,6 +2110,7 @@
     <li><a href="#fileInfo"><code>fileInfo</code></a></li>
     <li><a href="#inline_response_200"><code>inline_response_200</code></a></li>
     <li><a href="#inline_response_200_1"><code>inline_response_200_1</code></a></li>
+    <li><a href="#list"><code>list</code></a></li>
     <li><a href="#metadata"><code>metadata</code></a></li>
     <li><a href="#metadataList"><code>metadataList</code></a></li>
     <li><a href="#role"><code>role</code></a></li>
@@ -2764,6 +2357,12 @@
     </div>  <!-- field-items -->
 </div>
 <div class="model">
+    <h3><a name="list"><code>list</code></a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'>User recipes metadata list in system.</div>
+    <div class="field-items">
+    </div>  <!-- field-items -->
+</div>
+<div class="model">
     <h3><a name="metadata"><code>metadata</code></a> <a class="up" href="#__Models">Up</a></h3>
 
     <div class="field-items">
@@ -2784,11 +2383,16 @@
         <div class="param-desc"><span class="param-type"><a href="#integer">array[Integer]</a></span> personal recipes
             ids
         </div>
-        <div class="param-desc"><span class="param-type">example: []</span></div>
+        <div class="param-desc"><span class="param-type">example: [7,10,15,25]</span></div>
         <div class="param">meal (optional)</div>
         <div class="param-desc"><span class="param-type"><a href="#integer">array[Integer]</a></span> meal recipes ids
         </div>
-        <div class="param-desc"><span class="param-type">example: [7]</span></div>
+        <div class="param-desc"><span class="param-type">example: [15,20,22]</span></div>
+        <div class="param">family (optional)</div>
+        <div class="param-desc"><span class="param-type"><a href="#integer">array[Integer]</a></span> user family
+            recipes ids
+        </div>
+        <div class="param-desc"><span class="param-type">example: [151,158,180]</span></div>
     </div>  <!-- field-items -->
 </div>
 <div class="model">
@@ -2823,10 +2427,11 @@
         <div class="param">role (optional)</div>
         <div class="param-desc"><span class="param-type"><a href="#role">role</a></span></div>
         <div class="param">avatar (optional)</div>
-        <div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> User icon. You can get
-            the icon along the path: \files{avatar} format: integer
+        <div class="param-desc"><span class="param-type"><a href="#string">String</a></span> User icon. You can get the
+            icon along the path: \files{avatar}
         </div>
-        <div class="param-desc"><span class="param-type">example: 5123</span></div>
+        <div class="param-desc"><span class="param-type">example: https://giantbomb1.cbsistatic.com/uploads/scale_medium/0/6087/2437349-pikachu.png</span>
+        </div>
         <div class="param">fullName (optional)</div>
         <div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Real user name</div>
         <div class="param-desc"><span class="param-type">example: Avihai Serfati</span></div>
@@ -2851,10 +2456,10 @@
         <div class="param">role (optional)</div>
         <div class="param-desc"><span class="param-type"><a href="#role">role</a></span></div>
         <div class="param">avatar (optional)</div>
-        <div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> User icon. You can get
-            the icon along the path: \files{avatar} format: integer
+        <div class="param-desc"><span class="param-type"><a href="#string">String</a></span> User avatar. format: string
         </div>
-        <div class="param-desc"><span class="param-type">example: 5123</span></div>
+        <div class="param-desc"><span class="param-type">example: https://giantbomb1.cbsistatic.com/uploads/scale_medium/0/6087/2437349-pikachu.png</span>
+        </div>
         <div class="param">fullName (optional)</div>
         <div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Real user name</div>
         <div class="param-desc"><span class="param-type">example: Avihai Serfati</span></div>
@@ -2868,7 +2473,8 @@
         <div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Question for the password
             recovery
         </div>
-        <div class="param-desc"><span class="param-type">example: Place of Birth?</span></div>
+        <div class="param-desc"><span
+                class="param-type">example: What is the name of the town where you were born?</span></div>
         <div class="param">answer (optional)</div>
         <div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Answer for the question for
             recover password
