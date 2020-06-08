@@ -11,6 +11,8 @@ class MetadataRepository extends BaseRepository {
         if (!(await this.getById(user_id))) throw new NotFoundException()
         let result = await this.getById(user_id)
         let oldList = result[col]
+        if (oldList.length < 1)
+            return await this.getById(user_id)
         let filtered = oldList.filter(function (value) {
             // noinspection EqualityComparisonWithCoercionJS
             return value != recipe_id;
@@ -98,4 +100,5 @@ class MetadataRepository extends BaseRepository {
         return new MetadataModel(row.user_id, row.favs, row.watched, row.personal, row.meal, row.family)
     }
 }
+
 module.exports = MetadataRepository

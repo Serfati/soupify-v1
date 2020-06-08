@@ -20,7 +20,7 @@ router.post("/", passport.authenticate("jwt", {session: false}), createRecipe)
 router.get("/", getAllRecipes);
 router.get("/search", search);
 router.get("/rand", random);
-router.get("/:id", passport.authenticate("jwt", {session: false}), getRecipeById);
+router.get("/:id", getRecipeById);
 router.put("/:id", passport.authenticate("jwt", {session: false}), updateRecipe);
 router.delete("/:id", passport.authenticate("jwt", {session: false}), roleChecker(ROLES.Admin), deleteRecipeById);
 
