@@ -167,14 +167,21 @@ async function updateRecipe(req, res) {
 
 async function random(_, res) {
     try {
-        let rands = await axios.get(`${api_domain}/random`, {
-            params: {
-                apiKey: process.env.spooncaular,
-                number: 3
-            }
-        })
-        rands = cleanUp(rands.data.recipes)
-        rands = JSON.parse(JSON.stringify(rands));
+        // let rands = await axios.get(`${api_domain}/random`, {
+        //     params: {
+        //         apiKey: process.env.spooncaular,
+        //         number: 3
+        //     }
+        // })
+
+        //TODO delete before production
+        let rands = await Promise.all(Array(3).fill().map(async function (_, i) {
+            let random = Math.floor(Math.random() * (150 - 100 + 1) + 100)
+            let recipe = await soupifyRepository.Recipes.getById(random);
+            return JSON.parse(JSON.stringify(recipe))
+        }));
+
+        // rands = cleanUp(rands.data.recipes)
         await res.status(HttpStatus.OK).json({results: rands});
     } catch (e) {
         await res

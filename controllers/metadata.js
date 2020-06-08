@@ -158,7 +158,6 @@ async function fetchWatched(id, recipe_id) {
             recipes.push(recipe)
             recipes = cleanUp(recipes)
         }
-        // recipes = cleanUp(recipes)
         const meta = await soupifyRepository.Metadata.getById(id)
         const favs = meta["favs"].contains(parseInt(recipe_id))
         const watched = meta["watched"].contains(parseInt(recipe_id))
