@@ -26,7 +26,7 @@ router.delete("/:col/:recipe", passport.authenticate("jwt", {session: false}), r
 async function lastSeen(req, res) {
     try {
         const meta = await soupifyRepository.Metadata.getById(req.user.id)
-        const lastList = meta["watched"].slice(-3)
+        const lastList = meta["watched"].slice(-3).reverse()
         let lastSeen = await Promise.all(lastList.map(async function (item) {
             return fetchWatched(req.user.id, item)
         }));
