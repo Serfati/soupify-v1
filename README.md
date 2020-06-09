@@ -1,11 +1,11 @@
-# 🥘 Soupify - Back-end <img src="https://in.bgu.ac.il/marketing/graphics/BGU.sig3-he-en-white.png" height="48px" align="right" />
+<img src="https://in.bgu.ac.il/marketing/graphics/BGU.sig3-he-en-white.png" height="48px" align="right" />
+<img src=https://nerdychefs.com/wp-content/uploads/2020/04/cropped-chefs_logo_FAVICON.png height="120"/>  
 
-![](https://github.com/Miczeq22/the-recipe-book-server/workflows/Node%20CI/badge.svg)
 ![](https://img.shields.io/badge/version-1.1-blueviolet)
+![](https://img.shields.io/npm/v/npm)
 
 # Description
-:elephant: PostgreSQL Backend server for Soupify. Written with Node.js + express using Azure cloud :cyclone:
-This is the backend server for the **Soupify** recipes.
+:elephant: PostgreSQL Backend server for **Soupify** recipes webapp. Written with Node.js + express using Azure cloud :cyclone:
 This project is created for learning purposes of code quality, testing and architecture design.
 This RESTful API deployed with the help of [`Heroku`](https://heroku.com/) which allowing CD.
 <br>**Live** API Server: **[`https://soupify.herokuapp.com/api`](https://soupify.herokuapp.com/api)**.
