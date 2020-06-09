@@ -254,11 +254,11 @@ Responses have a specific format. We will use the User model to depict an exampl
   <div class="method-summary"></div>
   <h4><a href="#Account">Account</a></h4>
   <ul>
-  <li><a href="#getCurrentAccount"><code><span class="http-method">get</span> /account/</code></a></li>
+  <li><a href="#getCurrentAccount"><code><span class="http-method">get</span> /account</code></a></li>
   </ul>
   <h4><a href="#Auth">Auth</a></h4>
   <ul>
-  <li><a href="#auth"><code><span class="http-method">post</span> /authenticate/</code></a></li>
+  <li><a href="#auth"><code><span class="http-method">post</span> /authenticate</code></a></li>
   <li><a href="#getUserRecoveryQ"><code><span class="http-method">post</span> /authenticate/password-reset</code></a></li>
   <li><a href="#resetPassword"><code><span class="http-method">put</span> /authenticate/password-reset</code></a></li>
   </ul>
@@ -287,11 +287,11 @@ Responses have a specific format. We will use the User model to depict an exampl
   <h4><a href="#Recipes">Recipes</a></h4>
   <ul>
   <li><a href="#addIngredientToRecipe"><code><span class="http-method">post</span> /recipe/{recipeId}/ingredients/{ingredientId}</code></a></li>
-  <li><a href="#createRecipe"><code><span class="http-method">post</span> /recipes/</code></a></li>
+  <li><a href="#createRecipe"><code><span class="http-method">post</span> /recipes</code></a></li>
   <li><a href="#deleteIngredientFromRecipe"><code><span class="http-method">delete</span> /recipe/{recipeId}/ingredients/{ingredientId}</code></a></li>
   <li><a href="#deleteRecipe"><code><span class="http-method">delete</span> /recipes/{id}</code></a></li>
   <li><a href="#getDishById"><code><span class="http-method">get</span> /recipes/{id}</code></a></li>
-  <li><a href="#listRecipes"><code><span class="http-method">get</span> /recipes/</code></a></li>
+  <li><a href="#listRecipes"><code><span class="http-method">get</span> /recipes</code></a></li>
   <li><a href="#recipesRandGet"><code><span class="http-method">get</span> /recipes/rand</code></a></li>
   <li><a href="#recipesSearchGet"><code><span class="http-method">get</span> /recipes/search</code></a></li>
   <li><a href="#updateDish"><code><span class="http-method">put</span> /recipes/{id}</code></a></li>
@@ -299,8 +299,8 @@ Responses have a specific format. We will use the User model to depict an exampl
   </ul>
   <h4><a href="#Users">Users</a></h4>
   <ul>
-  <li><a href="#createUser"><code><span class="http-method">post</span> /users/</code></a></li>
-  <li><a href="#getAllUsers"><code><span class="http-method">get</span> /users/</code></a></li>
+  <li><a href="#createUser"><code><span class="http-method">post</span> /users</code></a></li>
+  <li><a href="#getAllUsers"><code><span class="http-method">get</span> /users</code></a></li>
   <li><a href="#getUserById"><code><span class="http-method">get</span> /users/{id}</code></a></li>
   <li><a href="#updateUser"><code><span class="http-method">put</span> /users/{id}</code></a></li>
   </ul>
@@ -309,7 +309,7 @@ Responses have a specific format. We will use the User model to depict an exampl
   <div class="method"><a name="getCurrentAccount"></a>
     <div class="method-path">
     <a class="up" href="#__Methods">Up</a>
-    <pre class="get"><code class="huge"><span class="http-method">get</span> /account/</code></pre></div>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /account</code></pre></div>
     <div class="method-summary">Get current account. (<span class="nickname">getCurrentAccount</span>)</div>
     <div class="method-notes">Returns account information. The token identifies the account.</div>
 
@@ -363,7 +363,7 @@ Responses have a specific format. We will use the User model to depict an exampl
   <div class="method"><a name="auth"></a>
     <div class="method-path">
     <a class="up" href="#__Methods">Up</a>
-    <pre class="post"><code class="huge"><span class="http-method">post</span> /authenticate/</code></pre></div>
+    <pre class="post"><code class="huge"><span class="http-method">post</span> /authenticate</code></pre></div>
     <div class="method-summary">Authentication in the system. (<span class="nickname">auth</span>)</div>
     <div class="method-notes"></div>
 
@@ -386,7 +386,7 @@ Responses have a specific format. We will use the User model to depict an exampl
 
     <h3 class="field-label">Return type</h3>
     <div class="return-type">
-      <a href="#user">user</a>
+      <a href="#inline_response_200">inline_response_200</a>
       
     </div>
 
@@ -394,15 +394,7 @@ Responses have a specific format. We will use the User model to depict an exampl
 
     <h3 class="field-label">Example data</h3>
     <div class="example-data-content-type">Content-Type: application/json</div>
-    <pre class="example"><code>{
-  "country" : "Israel",
-  "role" : "Admin",
-  "fullName" : "Avihai Serfati",
-  "id" : 1,
-  "avatar" : "https://giantbomb1.cbsistatic.com/uploads/scale_medium/0/6087/2437349-pikachu.png",
-  "login" : "serfati",
-  "email" : "serfati@gmail.com"
-}</code></pre>
+    <pre class="example"><code>""</code></pre>
 
     <h3 class="field-label">Produces</h3>
     This API call produces the following media types according to the <span class="header">Accept</span> request header;
@@ -415,7 +407,7 @@ Responses have a specific format. We will use the User model to depict an exampl
     <h3 class="field-label">Responses</h3>
     <h4 class="field-label">200</h4>
     Success
-        <a href="#user">user</a>
+        <a href="#inline_response_200">inline_response_200</a>
     <h4 class="field-label">400</h4>
     No login or password.
         <a href="#ApiResponse">ApiResponse</a>
@@ -456,7 +448,7 @@ Responses have a specific format. We will use the User model to depict an exampl
 
     <h3 class="field-label">Return type</h3>
     <div class="return-type">
-      <a href="#inline_response_200_1">inline_response_200_1</a>
+      <a href="#inline_response_200_2">inline_response_200_2</a>
       
     </div>
 
@@ -478,7 +470,7 @@ Responses have a specific format. We will use the User model to depict an exampl
     <h3 class="field-label">Responses</h3>
     <h4 class="field-label">200</h4>
     Success
-        <a href="#inline_response_200_1">inline_response_200_1</a>
+        <a href="#inline_response_200_2">inline_response_200_2</a>
     <h4 class="field-label">500</h4>
     Internal Server Error.
         <a href="#ApiResponse">ApiResponse</a>
@@ -510,7 +502,7 @@ Responses have a specific format. We will use the User model to depict an exampl
 
     <h3 class="field-label">Return type</h3>
     <div class="return-type">
-      <a href="#inline_response_200">inline_response_200</a>
+      <a href="#inline_response_200_1">inline_response_200_1</a>
       
     </div>
 
@@ -532,7 +524,7 @@ Responses have a specific format. We will use the User model to depict an exampl
     <h3 class="field-label">Responses</h3>
     <h4 class="field-label">200</h4>
     Success
-        <a href="#inline_response_200">inline_response_200</a>
+        <a href="#inline_response_200_1">inline_response_200_1</a>
     <h4 class="field-label">500</h4>
     Internal Server Error.
         <a href="#ApiResponse">ApiResponse</a>
@@ -1296,7 +1288,7 @@ Responses have a specific format. We will use the User model to depict an exampl
   <div class="method"><a name="createRecipe"></a>
     <div class="method-path">
     <a class="up" href="#__Methods">Up</a>
-    <pre class="post"><code class="huge"><span class="http-method">post</span> /recipes/</code></pre></div>
+    <pre class="post"><code class="huge"><span class="http-method">post</span> /recipes</code></pre></div>
     <div class="method-summary">Create a new recipe. (<span class="nickname">createRecipe</span>)</div>
     <div class="method-notes"></div>
 
@@ -1496,7 +1488,7 @@ Responses have a specific format. We will use the User model to depict an exampl
   <div class="method"><a name="listRecipes"></a>
     <div class="method-path">
     <a class="up" href="#__Methods">Up</a>
-    <pre class="get"><code class="huge"><span class="http-method">get</span> /recipes/</code></pre></div>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /recipes</code></pre></div>
     <div class="method-summary">List all recipes from database (<span class="nickname">listRecipes</span>)</div>
     <div class="method-notes">Retrive all recipes from database.</div>
 
@@ -1595,7 +1587,7 @@ Responses have a specific format. We will use the User model to depict an exampl
 
     <h3 class="field-label">Query parameters</h3>
     <div class="field-items">
-      <div class="param">query (optional)</div>
+      <div class="param">query (required)</div>
       
             <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash;  </div>      <div class="param">cuisine (optional)</div>
       
@@ -1605,7 +1597,7 @@ Responses have a specific format. We will use the User model to depict an exampl
       
             <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash;  </div>      <div class="param">number (optional)</div>
       
-            <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash;  format: int64</div>      <div class="param">instructionsRequired (optional)</div>
+            <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; How many Recipes will be returned default: 5 </div>      <div class="param">instructionsRequired (optional)</div>
       
             <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash;  format: int64</div>      <div class="param">offset (optional)</div>
       
@@ -1802,7 +1794,7 @@ Responses have a specific format. We will use the User model to depict an exampl
   <div class="method"><a name="createUser"></a>
     <div class="method-path">
     <a class="up" href="#__Methods">Up</a>
-    <pre class="post"><code class="huge"><span class="http-method">post</span> /users/</code></pre></div>
+    <pre class="post"><code class="huge"><span class="http-method">post</span> /users</code></pre></div>
     <div class="method-summary">Create a new user. (<span class="nickname">createUser</span>)</div>
     <div class="method-notes">Create a new user is system. Role by default - &lt;code&gt;client&lt;/code&gt;.</div>
 
@@ -1869,7 +1861,7 @@ Responses have a specific format. We will use the User model to depict an exampl
   <div class="method"><a name="getAllUsers"></a>
     <div class="method-path">
     <a class="up" href="#__Methods">Up</a>
-    <pre class="get"><code class="huge"><span class="http-method">get</span> /users/</code></pre></div>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /users</code></pre></div>
     <div class="method-summary">Get all users (<span class="nickname">getAllUsers</span>)</div>
     <div class="method-notes">This &lt;strong&gt;Admin&lt;/strong&gt; endpoint is designed to get all users according to the specified query paramaters. All query parameters are optional. If no parameter is set, it returns all users according to the default values of limit and offset.</div>
 
@@ -2087,9 +2079,13 @@ Responses have a specific format. We will use the User model to depict an exampl
     <li><a href="#body_1"><code>body_1</code></a></li>
     <li><a href="#body_2"><code>body_2</code></a></li>
     <li><a href="#creditionals"><code>creditionals</code></a></li>
+    <li><a href="#cuisine"><code>cuisine</code></a></li>
+    <li><a href="#diet"><code>diet</code></a></li>
     <li><a href="#fileInfo"><code>fileInfo</code></a></li>
     <li><a href="#inline_response_200"><code>inline_response_200</code></a></li>
     <li><a href="#inline_response_200_1"><code>inline_response_200_1</code></a></li>
+    <li><a href="#inline_response_200_2"><code>inline_response_200_2</code></a></li>
+    <li><a href="#intolerance"><code>intolerance</code></a></li>
     <li><a href="#list"><code>list</code></a></li>
     <li><a href="#metadata"><code>metadata</code></a></li>
     <li><a href="#metadataList"><code>metadataList</code></a></li>
@@ -2246,6 +2242,18 @@ Responses have a specific format. We will use the User model to depict an exampl
     </div>  <!-- field-items -->
   </div>
   <div class="model">
+    <h3><a name="cuisine"><code>cuisine</code></a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
+          </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="diet"><code>diet</code></a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
+          </div>  <!-- field-items -->
+  </div>
+  <div class="model">
     <h3><a name="fileInfo"><code>fileInfo</code></a> <a class="up" href="#__Models">Up</a></h3>
     
     <div class="field-items">
@@ -2261,17 +2269,44 @@ Responses have a specific format. We will use the User model to depict an exampl
     <h3><a name="inline_response_200"><code>inline_response_200</code></a> <a class="up" href="#__Models">Up</a></h3>
     
     <div class="field-items">
-      <div class="param">new_password (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
-          <div class="param-desc"><span class="param-type">example: Uo3HSq6</span></div>
+      <div class="param">id (optional)</div><div class="param-desc"><span class="param-type"><a href="#BigDecimal">BigDecimal</a></span> User unique idenifer </div>
+          <div class="param-desc"><span class="param-type">example: 1</span></div>
+<div class="param">login (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> User name </div>
+          <div class="param-desc"><span class="param-type">example: serfati</span></div>
+<div class="param">role (optional)</div><div class="param-desc"><span class="param-type"><a href="#role">role</a></span>  </div>
+<div class="param">avatar (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> User icon. You can get the icon along the path: \files{avatar} </div>
+          <div class="param-desc"><span class="param-type">example: https://giantbomb1.cbsistatic.com/uploads/scale_medium/0/6087/2437349-pikachu.png</span></div>
+<div class="param">fullName (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Real user name </div>
+          <div class="param-desc"><span class="param-type">example: Avihai Serfati</span></div>
+<div class="param">email (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> email address </div>
+          <div class="param-desc"><span class="param-type">example: serfati@gmail.com</span></div>
+<div class="param">country (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> User orgin country </div>
+          <div class="param-desc"><span class="param-type">example: Israel</span></div>
+<div class="param">token (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  format: int64</div>
+          <div class="param-desc"><span class="param-type">example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6IkFkbWluIiwiaWF0IjoxNTkxMzA3MTQ2fQ</span></div>
     </div>  <!-- field-items -->
   </div>
   <div class="model">
     <h3><a name="inline_response_200_1"><code>inline_response_200_1</code></a> <a class="up" href="#__Models">Up</a></h3>
     
     <div class="field-items">
+      <div class="param">new_password (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+          <div class="param-desc"><span class="param-type">example: Uo3HSq6</span></div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="inline_response_200_2"><code>inline_response_200_2</code></a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
       <div class="param">question (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
           <div class="param-desc"><span class="param-type">example: What is the name of the town where you were born?</span></div>
     </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="intolerance"><code>intolerance</code></a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
+          </div>  <!-- field-items -->
   </div>
   <div class="model">
     <h3><a name="list"><code>list</code></a> <a class="up" href="#__Models">Up</a></h3>
