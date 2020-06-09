@@ -1,5 +1,5 @@
-<img src=https://nerdychefs.com/wp-content/uploads/2020/04/cropped-chefs_logo_FAVICON.png height="120"/>  
 <img src="https://in.bgu.ac.il/marketing/graphics/BGU.sig3-he-en-white.png" height="48px" align="right" />
+<img src=https://nerdychefs.com/wp-content/uploads/2020/04/cropped-chefs_logo_FAVICON.png height="120"/>  
 
 ![](https://img.shields.io/badge/version-1.1-blueviolet)
 ![](https://img.shields.io/npm/v/npm)
