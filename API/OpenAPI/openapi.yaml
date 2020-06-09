@@ -12,7 +12,7 @@ info:
     \ to the following criteria:\n* Required vs Optional\n* Numeric vs Alpha vs Alphanumeric\n\
     * Unique vs Multiple\n* Min/max length of strings\n* Min/max values of numbers\n\
     * Date formats\n\n---\n**Request Headers**:\nAll request headers must have the\
-    \ following fields:\n```\n  Authorization: Bearer <user's auth JSON Web Token>\n\
+    \ following fields:\n```\nAuthorization: Bearer <user's auth JSON Web Token>\n\
     ```\nYou can use this header token for admin access:\n\n---\n**Pagination**:\n\
     Pages and Limits are query parameters which are designed for paginate freely.\
     \ Pages and Limits must be **NUMERIC**.\n* page is the page number jump to.\n\
@@ -49,7 +49,7 @@ tags:
   - name: meta
     description: meta-data for users
 paths:
-  /authenticate/:
+  /authenticate:
     post:
       tags:
         - auth
@@ -67,7 +67,7 @@ paths:
           content:
             application-json:
               schema:
-                $ref: '#/components/schemas/user'
+                $ref: '#/components/schemas/inline_response_200'
         "400":
           description: No login or password.
           content:
@@ -110,7 +110,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200'
+                $ref: '#/components/schemas/inline_response_200_1'
         "500":
           description: Internal Server Error.
           content:
@@ -134,14 +134,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_1'
+                $ref: '#/components/schemas/inline_response_200_2'
         "500":
           description: Internal Server Error.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiResponse'
-  /account/:
+  /account:
     get:
       tags:
         - account
@@ -169,7 +169,7 @@ paths:
                 $ref: '#/components/schemas/ApiResponse'
       security:
         - bearerAuth: []
-  /users/:
+  /users:
     get:
       tags:
         - users
@@ -406,11 +406,12 @@ paths:
               schema:
                 type: string
               examples: {}
-  /recipes/:
+  /recipes:
     get:
       tags:
         - recipes
-      summary: List all recipes
+      summary: List all recipes from database
+      description: Retrive all recipes from database.
       operationId: listRecipes
       parameters:
         - name: page
@@ -488,7 +489,8 @@ paths:
         - recipes
       summary: Get a recipe by {id}.
       description: Retrive a recipe from database or from spooncaular API with given
-        id according to local parameter. local=true => DB
+        id according to local parameter. `local=true` => DB. for now only `100-160`
+        reicpe`s ids inserted to database.
       operationId: getDishById
       parameters:
         - name: id
@@ -633,6 +635,7 @@ paths:
       tags:
         - recipes
       summary: Display 3 random recipes from Spooncaular API
+      description: Display 3 random recipes from Spooncaular API
       responses:
         "200":
           description: OK
@@ -674,33 +677,34 @@ paths:
           style: form
           explode: true
           schema:
-            type: string
-            example: Japanese
+            $ref: '#/components/schemas/cuisine'
         - name: diet
           in: query
           required: false
           style: form
           explode: true
           schema:
-            type: string
-            example: vegetarian
+            $ref: '#/components/schemas/diet'
         - name: intolerances
           in: query
           required: false
           style: form
           explode: true
           schema:
-            type: string
-            example: onion
+            $ref: '#/components/schemas/intolerance'
         - name: number
           in: query
+          description: How many Recipes will be returned
           required: false
           style: form
           explode: true
           schema:
             type: integer
-            format: int64
-            example: 5
+            default: 5
+            enum:
+              - 5
+              - 10
+              - 15
         - name: instructionsRequired
           in: query
           required: false
@@ -762,8 +766,8 @@ paths:
     put:
       tags:
         - recipes
-      summary: Update the amount of ingredient in a recipe
-      description: Update the amount of ingredient in a recipe
+      summary: Update the amount/unit of ingredient in a recipe
+      description: Update the amount or unit of ingredient in a recipe
       operationId: updateIngredientAmount
       parameters:
         - name: recipeId
@@ -782,8 +786,22 @@ paths:
           schema:
             type: integer
             format: int64
-      requestBody:
-        $ref: '#/components/requestBodies/addIngredientToRecipeBody'
+        - name: amount
+          in: query
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: number
+            example: 3.5
+        - name: unit
+          in: query
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: string
+            example: tablespoon
       responses:
         "200":
           description: OK
@@ -801,7 +819,7 @@ paths:
       tags:
         - recipes
       summary: Add an ingredient to a recipe
-      description: Add an amount of an ingredient to a given recipe
+      description: Add an ingredient to a given recipe
       operationId: addIngredientToRecipe
       parameters:
         - name: recipeId
@@ -820,8 +838,22 @@ paths:
           schema:
             type: integer
             format: int64
-      requestBody:
-        $ref: '#/components/requestBodies/addIngredientToRecipeBody'
+        - name: amount
+          in: query
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: number
+            example: 3.5
+        - name: unit
+          in: query
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: string
+            example: tablespoon
       responses:
         "201":
           description: OK
@@ -1533,12 +1565,78 @@ components:
         unit:
           type: string
           example: tablespoon
+    cuisine:
+      type: string
+      enum:
+        - African
+        - American
+        - British
+        - Cajun
+        - Caribbean
+        - Chinese
+        - Eastern European
+        - European
+        - French
+        - German
+        - Greek
+        - Indian
+        - Irish
+        - Italian
+        - Japanese
+        - Jewish
+        - Korean
+        - Latin American
+        - Mediterranean
+        - Mexican
+        - Middle Eastern
+        - Nordic
+        - Southern
+        - Spanish
+        - Thai
+        - Vietnamese
+    diet:
+      type: string
+      enum:
+        - Gluten Free
+        - Ketogenic
+        - Vegetarian
+        - Lacto-Vegetarian
+        - Ovo-Vegetarian
+        - Vegan
+        - Pescetarian
+        - Paleo
+        - Primal
+        - Whole30
+    intolerance:
+      type: string
+      enum:
+        - Dairy
+        - Egg
+        - Gluten
+        - Grain
+        - Peanut
+        - Seafood
+        - Sesame
+        - Shellfish
+        - Soy
+        - Sulfite
+        - Tree Nut
+        - Wheat
     ApiResponse:
       type: object
       properties:
         message:
           type: string
           description: Response description.
+    inline_response_200:
+      allOf:
+        - $ref: '#/components/schemas/user'
+        - type: object
+          properties:
+            token:
+              type: string
+              format: int64
+              example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6IkFkbWluIiwiaWF0IjoxNTkxMzA3MTQ2fQ
     body:
       required:
         - answer
@@ -1553,7 +1651,7 @@ components:
           type: string
           description: User Answer for recovery Question
           example: Dimona
-    inline_response_200:
+    inline_response_200_1:
       type: object
       properties:
         new_password:
@@ -1568,7 +1666,7 @@ components:
           type: string
           description: User Answer for recovery Question
           example: serfati
-    inline_response_200_1:
+    inline_response_200_2:
       type: object
       properties:
         question:
