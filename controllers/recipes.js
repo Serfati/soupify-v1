@@ -23,6 +23,80 @@ router.get("/rand", random);
 router.get("/:id", getRecipeById);
 router.put("/:id", passport.authenticate("jwt", {session: false}), updateRecipe);
 router.delete("/:id", passport.authenticate("jwt", {session: false}), roleChecker(ROLES.Admin), deleteRecipeById);
+router.post("/:id/ingredients/:ingredientId", passport.authenticate("jwt", {session: false}), addIngredientToRecipe);
+router.put("/:id/ingredients/:ingredientId", passport.authenticate("jwt", {session: false}), updateIngredientInRecipe);
+router.delete("/:id/ingredients/:ingredientId", passport.authenticate("jwt", {session: false}), roleChecker(ROLES.Admin), deleteIngredientFromRecipe);
+
+async function addIngredientToRecipe(req, res) {
+    try {
+        let id = req.params.id;
+        let ingredientId = req.params.ingredientId;
+        let amount = req.query.amount;
+        let unit = req.query.unit;
+        const recipe = await soupifyRepository.Recipes.getById(id);
+        let ingredient = await soupifyRepository.Ingredients.getById(ingredientId);
+        let raw = recipe.extended_ingredients.replaceAt(0, '[').replaceAt(recipe.extended_ingredients.length - 1, ']')
+        let ingredients = JSON.parse(raw)
+        ingredient["amount"] = parseInt(amount)
+        ingredient["unit"] = unit
+        ingredients.push(ingredient)
+        recipe.extended_ingredients = ingredients
+        req.body = recipe;
+        await updateRecipe(req, res)
+    } catch (e) {
+        await res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(
+            new ErrorMessageModel("Internal Server Error. Error: " + e.message)
+        );
+    }
+}
+
+async function updateIngredientInRecipe(req, res) {
+    try {
+        let id = req.params.id;
+        let ingredientId = req.params.ingredientId;
+        let amount = req.query.amount;
+        let unit = req.query.unit;
+        const recipe = await soupifyRepository.Recipes.getById(id);
+        let raw = recipe.extended_ingredients.replaceAt(0, '[').replaceAt(recipe.extended_ingredients.length - 1, ']')
+        let ingredients = JSON.parse(raw)
+
+        recipe.extended_ingredients = ingredients.map(function (e, i) {
+            if (ingredients[i].id != ingredientId)
+                return ingredients[i]
+            else {
+                ingredients[i]["amount"] = amount
+                ingredients[i]["unit"] = unit
+                return ingredients[i]
+            }
+        })
+        req.body = recipe;
+        await updateRecipe(req, res)
+    } catch (e) {
+        await res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(
+            new ErrorMessageModel("Internal Server Error. Error: " + e.message)
+        );
+    }
+}
+
+async function deleteIngredientFromRecipe(req, res) {
+    try {
+        let id = req.params.id;
+        let ingredientId = req.params.ingredientId;
+        const recipe = await soupifyRepository.Recipes.getById(id);
+        let raw = recipe.extended_ingredients.replaceAt(0, '[').replaceAt(recipe.extended_ingredients.length - 1, ']')
+        let ingredients = JSON.parse(raw)
+
+        recipe.extended_ingredients = ingredients.filter(function (e, i) {
+            return ingredients[i].id != ingredientId
+        })
+        req.body = recipe;
+        await updateRecipe(req, res)
+    } catch (e) {
+        await res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(
+            new ErrorMessageModel("Internal Server Error. Error: " + e.message)
+        );
+    }
+}
 
 async function getAllRecipes(req, res) {
     try {
@@ -167,22 +241,33 @@ async function updateRecipe(req, res) {
 
 async function random(_, res) {
     try {
-        // let rands = await axios.get(`${api_domain}/random`, {
-        //     params: {
-        //         apiKey: process.env.spooncaular,
-        //         number: 3
-        //     }
-        // })
+        let randoms = []
+        let number = 3
+        while (randoms.length != 3) {
+            if (randoms.length > 1)
+                number = 1
+            randoms = await axios.get(`${api_domain}/random`, {
+                params: {
+                    apiKey: process.env.spooncaular,
+                    number: number
+                }
+            })
 
-        //TODO delete before production
-        let rands = await Promise.all(Array(3).fill().map(async function (_, i) {
-            let random = Math.floor(Math.random() * (150 - 100 + 1) + 100)
-            let recipe = await soupifyRepository.Recipes.getById(random);
-            return JSON.parse(JSON.stringify(recipe))
-        }));
+            randoms = await Promise.all(
+                randoms.data.recipes.map((recipe_raw) => getInfo(recipe_raw.id)));
+            randoms = randoms.map((recipe) => recipe.data).filter((recipe) => recipe.instructions.length > 0);
+            randoms = cleanUp(randoms)
+        }
 
-        // rands = cleanUp(rands.data.recipes)
-        await res.status(HttpStatus.OK).json({results: rands});
+        // TODO fetch random recipes from database
+        // let rands = await Promise.all(Array(3).fill().map(async function (_, i) {
+        //     let random = Math.floor(Math.random() * (150 - 100 + 1) + 100)
+        //     let recipe = await soupifyRepository.Recipes.getById(random);
+        //     return JSON.parse(JSON.stringify(recipe))
+        // }));
+
+
+        await res.status(HttpStatus.OK).json({results: randoms});
     } catch (e) {
         await res
             .status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -218,7 +303,7 @@ async function search(req, res) {
         });
         let recipes = await Promise.all(
             search_response.data.results.map((recipe_raw) => getInfo(recipe_raw.id)));
-        recipes = recipes.map((recipe) => recipe.data);
+        recipes = recipes.map((recipe) => recipe.data).filter((recipe) => recipe.instructions.length > 0);
         recipes = cleanUp(recipes)
         let ids = recipes.map((recipe) => recipe.id);
         let lim = (limit) ? parseInt(limit) : 5
@@ -285,6 +370,10 @@ Array.prototype.contains = function (needle) {
         if (this[i] === needle) return true;
     }
     return false;
+}
+
+String.prototype.replaceAt = function (index, replacement) {
+    return this.substr(0, index) + replacement + this.substr(index + replacement.length);
 }
 
 module.exports = router

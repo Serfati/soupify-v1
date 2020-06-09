@@ -13,24 +13,23 @@ info:
     * Unique vs Multiple\n* Min/max length of strings\n* Min/max values of numbers\n\
     * Date formats\n\n---\n**Request Headers**:\nAll request headers must have the\
     \ following fields:\n```\n  Authorization: Bearer <user's auth JSON Web Token>\n\
-    ```\nYou can use this header token for admin access:\n\n Authorization: Bearer\
-    \ eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6IkFkbWluIiwiaWF0IjoxNTkxMzA3MTQ2fQ.yI_YTi1iaKAButmqg7cBouxlJnWaNfhGePm0LGI0giQ\n\
-    \n---\n**Pagination**:\nPages and Limits are query parameters which are designed\
-    \ for paginate freely. Pages and Limits must be **NUMERIC**.\n* page is the page\
-    \ number jump to.\n* Limit is the number of items per page.\n* offest calculate\
-    \ as (page - 1) x limit\n```\n  \"page\": 1, 2, 3 ...\n  \"limit\": 5, 10, 15\
-    \ ...\n```\n\n---\n**Response Format**:\nResponses have a specific format. We\
-    \ will use the User model to depict an example, but User can be any other model.\n\
-    \n  * **Successful Response with an array of users**:\n```\n {\n  \"Pagination\"\
-    : {\n    \"page\": 1,\n    \"per_page\": 5,\n    \"pre_page\": null,\n    \"next_page\"\
-    : 2,\n    \"total\": 100,\n    \"total_pages\": 20\n    },\n    \"data\": [\n\
-    \      {\n        * user object *\n      }\n  ]\n}\n\n```\n---"
+    ```\nYou can use this header token for admin access:\n\n---\n**Pagination**:\n\
+    Pages and Limits are query parameters which are designed for paginate freely.\
+    \ Pages and Limits must be **NUMERIC**.\n* page is the page number jump to.\n\
+    * Limit is the number of items per page.\n* offest calculate as (page - 1) x limit\n\
+    ```\n  \"page\": 1, 2, 3 ...\n  \"limit\": 5, 10, 15 ...\n```\n\n---\n**Response\
+    \ Format**:\nResponses have a specific format. We will use the User model to depict\
+    \ an example, but User can be any other model.\n\n  * **Successful Response with\
+    \ an array of users**:\n```\n {\n  \"Pagination\": {\n    \"page\": 1,\n    \"\
+    per_page\": 5,\n    \"pre_page\": null,\n    \"next_page\": 2,\n    \"total\"\
+    : 100,\n    \"total_pages\": 20\n    },\n    \"data\": [\n      {\n        * user\
+    \ object *\n      }\n  ]\n}\n```\n---"
   contact:
     email: serfata@post.bgu.ac.il
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
-  version: 1.0.0
+  version: "1.1"
 servers:
   - url: https://virtserver.swaggerhub.com/serfatio/Soupify/1.0.0
     description: SwaggerHub API Auto Mocking
@@ -1384,7 +1383,7 @@ components:
         - Reviewer
     list:
       type: string
-      description: User recipes metadata list in system.
+      description: User recipes metadata lists in system.
       example: Admin
       enum:
         - favs
