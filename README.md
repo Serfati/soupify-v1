@@ -22,7 +22,7 @@ This RESTful API deployed with the help of [`Heroku`](https://heroku.com/) which
 
 ## 📃 Documentation
 
-- [OpenApi 3 Specification](https://app.swaggerhub.com/apis-docs/serfatio/Soupify/1.0.0#/)
+- [OpenApi 3 Specification](https://app.swaggerhub.com/apis-docs/serfatio/Soupify/1.1)
 - [Vue Web Application]() - TODO
 
 ---
