@@ -22,8 +22,12 @@ This RESTful API deployed with the help of [`Heroku`](https://heroku.com/) which
 
 ## 📃 Documentation
 
-- [OpenApi 3 Specification](https://app.swaggerhub.com/apis-docs/serfatio/Soupify/1.1)
+- [OpenApi 3 Specification](https://app.swaggerhub.com/apis-docs/serfatio/Soupify/1.1) - files in [API](https://github.com/Serfati/soupify-v1/tree/master/API/OpenAPI) folder
 - [Vue Web Application]() - TODO
+- Default Users: 
+  - Admin - root: toor!1
+  - Client - serfati: toor!1
+  - Chef - yarden: yarden123
 
 ---
 
@@ -52,7 +56,7 @@ You can modify or contribute to this project by following the steps below:
   $> cd soupify
   ```
 
-**2. Setup**k
+**2. Setup**
 
 - Install npm packages in project directory
 

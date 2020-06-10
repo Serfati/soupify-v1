@@ -303,7 +303,9 @@ async function search(req, res) {
         });
         let recipes = await Promise.all(
             search_response.data.results.map((recipe_raw) => getInfo(recipe_raw.id)));
-        recipes = recipes.map((recipe) => recipe.data).filter((recipe) => recipe.instructions.length > 0);
+        recipes = recipes
+            .map((recipe) => recipe.data)
+            .filter((recipe) => recipe.instructions.length > 0 && recipe.id > 160)
         recipes = cleanUp(recipes)
         let ids = recipes.map((recipe) => recipe.id);
         let lim = (limit) ? parseInt(limit) : 5
