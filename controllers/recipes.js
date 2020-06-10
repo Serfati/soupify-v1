@@ -241,33 +241,34 @@ async function updateRecipe(req, res) {
 
 async function random(_, res) {
     try {
-        let randoms = []
-        let number = 3
-        while (randoms.length != 3) {
-            if (randoms.length > 1)
-                number = 1
-            randoms = await axios.get(`${api_domain}/random`, {
-                params: {
-                    apiKey: process.env.spooncaular,
-                    number: number
-                }
-            })
-
-            randoms = await Promise.all(
-                randoms.data.recipes.map((recipe_raw) => getInfo(recipe_raw.id)));
-            randoms = randoms.map((recipe) => recipe.data).filter((recipe) => recipe.instructions.length > 0);
-            randoms = cleanUp(randoms)
-        }
+        // TODO fetch random recipes from Spooncaular API
+        // let randoms = []
+        // let number = 3
+        // while (randoms.length != 3) {
+        //     if (randoms.length > 1)
+        //         number = 1
+        //     randoms = await axios.get(`${api_domain}/random`, {
+        //         params: {
+        //             apiKey: process.env.spooncaular,
+        //             number: number
+        //         }
+        //     })
+        //
+        //     randoms = await Promise.all(
+        //         randoms.data.recipes.map((recipe_raw) => getInfo(recipe_raw.id)));
+        //     randoms = randoms.map((recipe) => recipe.data).filter((recipe) => recipe.instructions.length > 0);
+        //     randoms = cleanUp(randoms)
+        // }
 
         // TODO fetch random recipes from database
-        // let rands = await Promise.all(Array(3).fill().map(async function (_, i) {
-        //     let random = Math.floor(Math.random() * (150 - 100 + 1) + 100)
-        //     let recipe = await soupifyRepository.Recipes.getById(random);
-        //     return JSON.parse(JSON.stringify(recipe))
-        // }));
+        let rands = await Promise.all(Array(3).fill().map(async function (_, i) {
+            let random = Math.floor(Math.random() * (160 - 100 + 1) + 100)
+            let recipe = await soupifyRepository.Recipes.getById(random);
+            return recipe
+        }));
 
 
-        await res.status(HttpStatus.OK).json({results: randoms});
+        await res.status(HttpStatus.OK).json({results: rands});
     } catch (e) {
         await res
             .status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -305,7 +306,7 @@ async function search(req, res) {
             search_response.data.results.map((recipe_raw) => getInfo(recipe_raw.id)));
         recipes = recipes
             .map((recipe) => recipe.data)
-            .filter((recipe) => recipe.instructions.length > 0 && recipe.id > 160)
+            .filter((recipe) => recipe.instructions.length > 0 && recipe.id > 200)
         recipes = cleanUp(recipes)
         let ids = recipes.map((recipe) => recipe.id);
         let lim = (limit) ? parseInt(limit) : 5

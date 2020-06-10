@@ -104,7 +104,8 @@ class RecipesRepository extends BaseRepository {
     _getRecipeFromRow(row) {
         return new RecipeModel(row.id, row.title, row.ready_in_minutes, row.aggregate_likes
             , row.serving, row.vegetarian, row.vegan, row.gluten_free, row.image, row.instructions
-            , row.extended_ingredients)
+            , JSON.parse(row.extended_ingredients.replaceAt(0, '[').replaceAt(row.extended_ingredients.length - 1, ']'))
+        )
     }
 }
 
