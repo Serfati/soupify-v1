@@ -88,7 +88,7 @@ async function authenticate(req, res) {
         const match = await bcrypt.compare(password, user.password)
         if (match) {
             const payload = {id: user.id, role: user.role}
-            const token = jwt.sign(payload, process.env.secretOrKeyJwt)
+            const token = jwt.sign(payload, process.env.secretOrKeyJwt, {expiresIn: "2 days"})
             const {password, question, answer, ...userWithoutPassword} = user
             await res.json({...userWithoutPassword, token})
         } else {

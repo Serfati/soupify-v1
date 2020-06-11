@@ -6,7 +6,7 @@ const passport = require("passport")
 const HttpStatus = require('http-status-codes')
 const ROLES = require("../models/roles");
 const roleChecker = require("../middlewares/role-checker");
-const {cleanUp} = require("../controllers/recipes");
+const recipes = require("../controllers/recipes");
 const AlreadyExistException = require("../models/Exceptions/AlreadyExistException.js");
 const ErrorMessageModel = require("../models/ErrorMessageModel");
 const NotFoundException = require("../models/Exceptions/NotFoundException");
@@ -154,6 +154,8 @@ async function fetchWatched(id, recipe_id) {
                 }
             });
             recipe = recipe.data
+            recipe = recipes.cleanUp([recipe]);
+            recipe = recipe[0]
         }
         const meta = await soupifyRepository.Metadata.getById(id)
         const favs = meta["favs"].contains(parseInt(recipe_id))

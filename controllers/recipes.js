@@ -380,3 +380,4 @@ String.prototype.replaceAt = function (index, replacement) {
 }
 
 module.exports = router
+module.exports.cleanUp = cleanUp
