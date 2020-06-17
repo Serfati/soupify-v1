@@ -2,6 +2,6 @@
 <project version="4">
   <component name="JavaScriptLibraryMappings">
     <file url="file://$PROJECT_DIR$" libraries="{Node.js Core}" />
-    <file url="PROJECT" libraries="{@types/bcrypt, @types/express, @types/lodash, @types/passport}" />
+    <file url="PROJECT" libraries="{@types/bcrypt, @types/express, @types/lodash, @types/multer, @types/passport}" />
   </component>
 </project>
