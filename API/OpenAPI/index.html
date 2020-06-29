@@ -238,7 +238,7 @@ Responses have a specific format. We will use the User model to depict an exampl
 </div>
     <div class="app-desc">More information: <a href="https://helloreverb.com">https://helloreverb.com</a></div>
     <div class="app-desc">Contact Info: <a href="serfata@post.bgu.ac.il">serfata@post.bgu.ac.il</a></div>
-    <div class="app-desc">Version: 1.1</div>
+    <div class="app-desc">Version: 1.1.3</div>
     <div class="app-desc">BasePath:/serfatio/Soupify/1.0.0</div>
     <div class="license-info">Apache 2.0</div>
     <div class="license-url">http://www.apache.org/licenses/LICENSE-2.0.html</div>
@@ -588,13 +588,13 @@ Responses have a specific format. We will use the User model to depict an exampl
 
     <h3 class="field-label">Form parameters</h3>
     <div class="field-items">
-      <div class="param">file (required)</div>
+      <div class="param">localFile (required)</div>
       
             <div class="param-desc"><span class="param-type">Form Parameter</span> &mdash;  format: binary</div>    </div>  <!-- field-items -->
 
     <h3 class="field-label">Return type</h3>
     <div class="return-type">
-      <a href="#fileInfo">fileInfo</a>
+      <a href="#ImageUrl">ImageUrl</a>
       
     </div>
 
@@ -603,9 +603,7 @@ Responses have a specific format. We will use the User model to depict an exampl
     <h3 class="field-label">Example data</h3>
     <div class="example-data-content-type">Content-Type: application/json</div>
     <pre class="example"><code>{
-  "name" : "newFile.jpg",
-  "id" : 2123,
-  "url" : "image/jpg"
+  "url" : "https://res.cloudinary.com/serfati/image/upload/v1591970948/soupify_zrbnbo.png"
 }</code></pre>
 
     <h3 class="field-label">Produces</h3>
@@ -619,7 +617,7 @@ Responses have a specific format. We will use the User model to depict an exampl
     <h3 class="field-label">Responses</h3>
     <h4 class="field-label">201</h4>
     File uploaded.
-        <a href="#fileInfo">fileInfo</a>
+        <a href="#ImageUrl">ImageUrl</a>
     <h4 class="field-label">400</h4>
     The file is not in the request.
         <a href="#ApiResponse">ApiResponse</a>
@@ -2069,11 +2067,11 @@ Responses have a specific format. We will use the User model to depict an exampl
   <h3>Table of Contents</h3>
   <ol>
     <li><a href="#ApiResponse"><code>ApiResponse</code></a></li>
+    <li><a href="#ImageUrl"><code>ImageUrl</code></a></li>
     <li><a href="#Ingredient"><code>Ingredient</code></a></li>
     <li><a href="#IngredientInRecipe"><code>IngredientInRecipe</code></a></li>
     <li><a href="#IngredientWithId"><code>IngredientWithId</code></a></li>
     <li><a href="#Recipe"><code>Recipe</code></a></li>
-    <li><a href="#RecipePreview"><code>RecipePreview</code></a></li>
     <li><a href="#RecipeWithId"><code>RecipeWithId</code></a></li>
     <li><a href="#body"><code>body</code></a></li>
     <li><a href="#body_1"><code>body_1</code></a></li>
@@ -2081,7 +2079,6 @@ Responses have a specific format. We will use the User model to depict an exampl
     <li><a href="#creditionals"><code>creditionals</code></a></li>
     <li><a href="#cuisine"><code>cuisine</code></a></li>
     <li><a href="#diet"><code>diet</code></a></li>
-    <li><a href="#fileInfo"><code>fileInfo</code></a></li>
     <li><a href="#inline_response_200"><code>inline_response_200</code></a></li>
     <li><a href="#inline_response_200_1"><code>inline_response_200_1</code></a></li>
     <li><a href="#inline_response_200_2"><code>inline_response_200_2</code></a></li>
@@ -2099,6 +2096,14 @@ Responses have a specific format. We will use the User model to depict an exampl
     
     <div class="field-items">
       <div class="param">message (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Response description. </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="ImageUrl"><code>ImageUrl</code></a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
+      <div class="param">url (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> Cloudinary file url </div>
+          <div class="param-desc"><span class="param-type">example: https://res.cloudinary.com/serfati/image/upload/v1591970948/soupify_zrbnbo.png</span></div>
     </div>  <!-- field-items -->
   </div>
   <div class="model">
@@ -2158,28 +2163,6 @@ Responses have a specific format. We will use the User model to depict an exampl
     </div>  <!-- field-items -->
   </div>
   <div class="model">
-    <h3><a name="RecipePreview"><code>RecipePreview</code></a> <a class="up" href="#__Models">Up</a></h3>
-    
-    <div class="field-items">
-      <div class="param">title </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
-          <div class="param-desc"><span class="param-type">example: Spaghetti Carbonara</span></div>
-<div class="param">ready_in_minutes </div><div class="param-desc"><span class="param-type"><a href="#BigDecimal">BigDecimal</a></span>  </div>
-          <div class="param-desc"><span class="param-type">example: 25</span></div>
-<div class="param">aggregate_likes </div><div class="param-desc"><span class="param-type"><a href="#BigDecimal">BigDecimal</a></span>  </div>
-          <div class="param-desc"><span class="param-type">example: 1217</span></div>
-<div class="param">serving </div><div class="param-desc"><span class="param-type"><a href="#BigDecimal">BigDecimal</a></span>  </div>
-          <div class="param-desc"><span class="param-type">example: 6</span></div>
-<div class="param">vegetarian </div><div class="param-desc"><span class="param-type"><a href="#boolean">Boolean</a></span>  </div>
-          <div class="param-desc"><span class="param-type">example: true</span></div>
-<div class="param">vegan </div><div class="param-desc"><span class="param-type"><a href="#boolean">Boolean</a></span>  </div>
-          <div class="param-desc"><span class="param-type">example: true</span></div>
-<div class="param">gluten_free </div><div class="param-desc"><span class="param-type"><a href="#boolean">Boolean</a></span>  </div>
-          <div class="param-desc"><span class="param-type">example: false</span></div>
-<div class="param">image </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
-          <div class="param-desc"><span class="param-type">example: https://spoonacular.com/recipeImages/535835-556x370.jpg</span></div>
-    </div>  <!-- field-items -->
-  </div>
-  <div class="model">
     <h3><a name="RecipeWithId"><code>RecipeWithId</code></a> <a class="up" href="#__Models">Up</a></h3>
     
     <div class="field-items">
@@ -2228,7 +2211,7 @@ Responses have a specific format. We will use the User model to depict an exampl
     <h3><a name="body_2"><code>body_2</code></a> <a class="up" href="#__Models">Up</a></h3>
     
     <div class="field-items">
-      <div class="param">file (optional)</div><div class="param-desc"><span class="param-type"><a href="#binary">array[byte[]]</a></span>  format: binary</div>
+      <div class="param">localFile (optional)</div><div class="param-desc"><span class="param-type"><a href="#binary">array[byte[]]</a></span>  format: binary</div>
     </div>  <!-- field-items -->
   </div>
   <div class="model">
@@ -2252,18 +2235,6 @@ Responses have a specific format. We will use the User model to depict an exampl
     
     <div class="field-items">
           </div>  <!-- field-items -->
-  </div>
-  <div class="model">
-    <h3><a name="fileInfo"><code>fileInfo</code></a> <a class="up" href="#__Models">Up</a></h3>
-    
-    <div class="field-items">
-      <div class="param">id (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> file id </div>
-          <div class="param-desc"><span class="param-type">example: 2123</span></div>
-<div class="param">name (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> file id </div>
-          <div class="param-desc"><span class="param-type">example: newFile.jpg</span></div>
-<div class="param">url (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span> file url </div>
-          <div class="param-desc"><span class="param-type">example: image/jpg</span></div>
-    </div>  <!-- field-items -->
   </div>
   <div class="model">
     <h3><a name="inline_response_200"><code>inline_response_200</code></a> <a class="up" href="#__Models">Up</a></h3>
