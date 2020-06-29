@@ -1,5 +1,6 @@
 const BaseRepository = require("./BaseRepository");
 const UserModel = require("../../models/UserModel");
+const validator = require("email-validator");
 const UserModelWithPassword = require("../../models/UserModelWithPassword");
 const AlreadyExistException = require("../../models/Exceptions/AlreadyExistException");
 const NotFoundException = require("../../models/Exceptions/NotFoundException");
@@ -148,9 +149,12 @@ class UsersRepository extends BaseRepository {
     }
 
     async getByLogin(login) {
+        const mailOrLogin = !validator.validate(login) ? 'login' : 'email'
+
         let getUserResult = await this._client.query(
-            `SELECT * FROM ${this._table} WHERE login = '${login}'; `
+            `SELECT * FROM ${this._table} WHERE ${mailOrLogin} = '${login}'; `
         );
+
         if (getUserResult.rowCount === 0) {
             throw new NotFoundException();
         }

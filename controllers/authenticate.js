@@ -3,6 +3,7 @@ const express = require('express')
 const router = express.Router()
 const jwt = require('jsonwebtoken')
 const HttpStatus = require('http-status-codes')
+const validator = require("email-validator");
 const generatePassword = require("password-generator");
 const ErrorMessageModel = require('../models/ErrorMessageModel')
 const NotFoundException = require('../models/Exceptions/NotFoundException')
@@ -16,13 +17,12 @@ router.post("/password-reset", question)
 async function question(req, res) {
 
     const login = req.body.login
-
     if (!login) {
-        await res.status(HttpStatus.BAD_REQUEST).json({message: "No login"})
+        await res.status(HttpStatus.BAD_REQUEST).json({message: "No login or email"})
         return
     }
     try {
-        const user = await soupifyRepository.Users.getByLogin(login)
+        const user = await soupifyRepository.Users.getByLogin(login);
         if (user.is_blocked)
             await res.status(HttpStatus.UNAUTHORIZED).json(new ErrorMessageModel("Authentication failed. User is blocked."))
         const question = user.question
