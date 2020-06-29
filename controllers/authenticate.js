@@ -3,7 +3,6 @@ const express = require('express')
 const router = express.Router()
 const jwt = require('jsonwebtoken')
 const HttpStatus = require('http-status-codes')
-const validator = require("email-validator");
 const generatePassword = require("password-generator");
 const ErrorMessageModel = require('../models/ErrorMessageModel')
 const NotFoundException = require('../models/Exceptions/NotFoundException')

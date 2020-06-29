@@ -33,9 +33,7 @@
     "password-generator": "^2.3.2",
     "pg": "^8.2.1",
     "pg-format": "^1.0.4",
-    "uuid": "^8.0.0"
-  },
-  "devDependencies": {
+    "uuid": "^8.0.0",
     "email-validator": "^2.0.4"
   }
 }
