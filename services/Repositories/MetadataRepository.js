@@ -11,13 +11,17 @@ class MetadataRepository extends BaseRepository {
         if (!(await this.getById(user_id))) throw new NotFoundException()
         let result = await this.getById(user_id)
         let oldList = result[col]
-        if (oldList.length < 1)
+        if (oldList.length <= 0)
             return await this.getById(user_id)
         let filtered = oldList.filter(function (value) {
             // noinspection EqualityComparisonWithCoercionJS
             return value != recipe_id;
         });
-        const query = format(`UPDATE ${this._table} SET ${col} = ARRAY[${filtered}] WHERE (user_id = ${user_id})`);
+        let query =''
+        if(filtered.length <= 0 )
+            query = format(`UPDATE ${this._table} SET ${col} = ARRAY[]::INTEGER[] WHERE (user_id = ${user_id})`);
+        else
+            query = format(`UPDATE ${this._table} SET ${col} = ARRAY[${filtered}] WHERE (user_id = ${user_id})`);
         await this._client.query(query)
         return await this.getById(user_id)
     }
@@ -78,20 +82,6 @@ class MetadataRepository extends BaseRepository {
 
     async addTo(user_id, col, recipe_id) {
         const query = format(`UPDATE ${this._table} SET ${col} = ${col} || ${recipe_id} WHERE user_id = ${user_id}`);
-        await this._client.query(query)
-        return await this.getById(user_id)
-    }
-
-    async addTo2(user_id, col, recipe_id) {
-        if (!(await this.getById(user_id))) throw new NotFoundException()
-        let result = await this.getById(user_id)
-        let oldList = result[col]
-        oldList.push(parseInt(recipe_id))
-        let filtered = oldList.filter(function (value) {
-            // noinspection EqualityComparisonWithCoercionJS
-            return value != recipe_id;
-        });
-        const query = format(`UPDATE ${this._table} SET ${col} = ARRAY[${filtered}] WHERE (user_id = ${user_id})`);
         await this._client.query(query)
         return await this.getById(user_id)
     }
