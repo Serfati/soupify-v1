@@ -289,7 +289,7 @@ async function getInfo(id) {
 
 async function search(req, res) {
     try {
-        const {query, cuisine, diet, intolerances, number, offset, page, limit} = req.query;
+        const {query, cuisine, diet, intolerances, number, offset, page, limit, sort} = req.query;
         const search_response = await axios.get(`${api_domain}/search`, {
             params: {
                 query: query,
@@ -308,6 +308,7 @@ async function search(req, res) {
             .map((recipe) => recipe.data)
             .filter((recipe) => recipe.instructions.length > 0 && recipe.id > 200)
         recipes = cleanUp(recipes)
+        recipes = sorting(recipes, sort)
         let ids = recipes.map((recipe) => recipe.id);
         let lim = (limit) ? parseInt(limit) : 5
         let paginatedRecipes = await paginator(recipes, parseInt(page), lim)
@@ -366,6 +367,10 @@ function cleanUp(recipes) {
             }
         }
     );
+}
+
+function sorting(recipes ,type) {
+    recipes.sort((a, b) => parseInt(a[type]) - parseInt(b[type]));
 }
 
 Array.prototype.contains = function (needle) {
