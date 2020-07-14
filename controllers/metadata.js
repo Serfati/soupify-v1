@@ -125,7 +125,7 @@ async function reorderMeal(req, res) {
     try {
         const user_id = req.user.id
         const meal_order = req.body
-        const updatedMeta = await soupifyRepository.Metadata.reorder(user_id, meal_order)
+        const updatedMeta = await soupifyRepository.Metadata.reorder(user_id, meal_order.reverse)
         await res.json(updatedMeta)
     } catch (e) {
         if (e instanceof NotFoundException)
