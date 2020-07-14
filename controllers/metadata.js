@@ -124,7 +124,7 @@ async function updateList(req, res) {
 async function reorderMeal(req, res) {
     try {
         const user_id = req.user.id
-        const meal_order = req.body.payload
+        const meal_order = req.body
         const updatedMeta = await soupifyRepository.Metadata.reorder(user_id, meal_order)
         await res.json(updatedMeta)
     } catch (e) {
