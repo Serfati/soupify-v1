@@ -20,6 +20,7 @@ router.get("/", passport.authenticate("jwt", {session: false}), getMetaById)
 router.get("/last-seen", passport.authenticate("jwt", {session: false}), lastSeen)
 router.get("/:col", passport.authenticate("jwt", {session: false}), getColumn)
 router.post("/:col/:recipe", passport.authenticate("jwt", {session: false}), updateList)
+router.post("/reorder", passport.authenticate("jwt", {session: false}), reorderMeal)
 router.delete("/:col/:recipe", passport.authenticate("jwt", {session: false}), removeFromList)
 
 
@@ -111,6 +112,22 @@ async function updateList(req, res) {
         const recipe_id = req.params.recipe
         await soupifyRepository.Metadata.removeFrom(user_id, column, recipe_id)
         const updatedMeta = await soupifyRepository.Metadata.addTo(user_id, column, recipe_id)
+        await res.json(updatedMeta)
+    } catch (e) {
+        if (e instanceof NotFoundException)
+            await res.status(HttpStatus.NOT_FOUND).json(new ErrorMessageModel(e.message))
+        else
+            await res.status(HttpStatus.BAD_REQUEST).json(new ErrorMessageModel(e.message))
+    }
+}
+
+async function reorderMeal(req, res) {
+    try {
+        const column = 'meal'
+        if (!validList(column)) throw new NotFoundException("invalid list name.")
+        const user_id = req.user.id
+        const meal_order = req.body.payload
+        const updatedMeta = await soupifyRepository.Metadata.reorder(user_id, column, meal_order)
         await res.json(updatedMeta)
     } catch (e) {
         if (e instanceof NotFoundException)

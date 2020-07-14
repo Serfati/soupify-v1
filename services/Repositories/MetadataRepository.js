@@ -17,11 +17,18 @@ class MetadataRepository extends BaseRepository {
             // noinspection EqualityComparisonWithCoercionJS
             return value != recipe_id;
         });
-        let query =''
-        if(filtered.length <= 0 )
+        let query = ''
+        if (filtered.length <= 0)
             query = format(`UPDATE ${this._table} SET ${col} = ARRAY[]::INTEGER[] WHERE (user_id = ${user_id})`);
         else
             query = format(`UPDATE ${this._table} SET ${col} = ARRAY[${filtered}] WHERE (user_id = ${user_id})`);
+        await this._client.query(query)
+        return await this.getById(user_id)
+    }
+
+    async reorder(user_id, col, meal_order) {
+        if (!(await this.getById(user_id))) throw new NotFoundException()
+        let query = format(`UPDATE ${this._table} SET ${col} = ARRAY[${meal_order}] WHERE (user_id = ${user_id})`);
         await this._client.query(query)
         return await this.getById(user_id)
     }
