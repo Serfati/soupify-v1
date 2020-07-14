@@ -302,13 +302,14 @@ async function search(req, res) {
                 apiKey: process.env.spooncaular
             }
         });
+        const sortBy = ['none', 'aggregate_likes', 'ready_in_minutes']
         let recipes = await Promise.all(
             search_response.data.results.map((recipe_raw) => getInfo(recipe_raw.id)));
         recipes = recipes
             .map((recipe) => recipe.data)
             .filter((recipe) => recipe.instructions.length > 0 && recipe.id > 200)
         recipes = cleanUp(recipes)
-        if(sort && sort != 'none') recipes = sorting(recipes, sort)
+        if (sort && sort != 'none' && sortBy.contains(sort)) recipes = sorting(recipes, sort)
         let ids = recipes.map((recipe) => recipe.id);
         let lim = (limit) ? parseInt(limit) : 5
         let paginatedRecipes = await paginator(recipes, parseInt(page), lim)
@@ -370,8 +371,8 @@ function cleanUp(recipes) {
 }
 
 function sorting(recipes ,type) {
-    console.log('sorting by ' + type)
-    recipes.sort((a, b) => parseInt(a[type]) - parseInt(b[type]));
+    recipes.sort((a, b) => (b[type]) - (a[type]));
+    return recipes
 }
 
 Array.prototype.contains = function (needle) {
