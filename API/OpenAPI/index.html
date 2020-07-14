@@ -282,7 +282,7 @@ Responses have a specific format. We will use the User model to depict an exampl
   <li><a href="#getMealById"><code><span class="http-method">get</span> /metadata/{list}</code></a></li>
   <li><a href="#getMetaById"><code><span class="http-method">get</span> /metadata</code></a></li>
   <li><a href="#lastSeen"><code><span class="http-method">get</span> /metadata/last-seen</code></a></li>
-  <li><a href="#removeMealById"><code><span class="http-method">delete</span> /metadata/reorder</code></a></li>
+  <li><a href="#removeMealById"><code><span class="http-method">delete</span> /metadata/{list}/{recipeId}</code></a></li>
   <li><a href="#reorderMeal"><code><span class="http-method">post</span> /metadata/reorder</code></a></li>
   </ul>
   <h4><a href="#Recipes">Recipes</a></h4>
@@ -1173,7 +1173,7 @@ Responses have a specific format. We will use the User model to depict an exampl
   <div class="method"><a name="removeMealById"></a>
     <div class="method-path">
     <a class="up" href="#__Methods">Up</a>
-    <pre class="delete"><code class="huge"><span class="http-method">delete</span> /metadata/reorder</code></pre></div>
+    <pre class="delete"><code class="huge"><span class="http-method">delete</span> /metadata/{list}/{recipeId}</code></pre></div>
     <div class="method-summary">remove a user list&#x27;s recipe metadata with given id. (<span class="nickname">removeMealById</span>)</div>
     <div class="method-notes"></div>
 
