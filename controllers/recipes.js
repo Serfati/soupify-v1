@@ -308,7 +308,7 @@ async function search(req, res) {
             .map((recipe) => recipe.data)
             .filter((recipe) => recipe.instructions.length > 0 && recipe.id > 200)
         recipes = cleanUp(recipes)
-        recipes = sorting(recipes, sort)
+        if(sort) recipes = sorting(recipes, sort)
         let ids = recipes.map((recipe) => recipe.id);
         let lim = (limit) ? parseInt(limit) : 5
         let paginatedRecipes = await paginator(recipes, parseInt(page), lim)
