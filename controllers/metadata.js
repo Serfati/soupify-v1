@@ -123,11 +123,9 @@ async function updateList(req, res) {
 
 async function reorderMeal(req, res) {
     try {
-        const column = 'meal'
-        if (!validList(column)) throw new NotFoundException("invalid list name.")
         const user_id = req.user.id
         const meal_order = req.body.payload
-        const updatedMeta = await soupifyRepository.Metadata.reorder(user_id, column, meal_order)
+        const updatedMeta = await soupifyRepository.Metadata.reorder(user_id, meal_order)
         await res.json(updatedMeta)
     } catch (e) {
         if (e instanceof NotFoundException)

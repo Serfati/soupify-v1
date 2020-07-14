@@ -19,22 +19,22 @@ class MetadataRepository extends BaseRepository {
         });
         let query = ''
         if (filtered.length <= 0)
-            query = format(`UPDATE ${this._table} SET ${col} = ARRAY[]::INTEGER[] WHERE ('user_id' = ${user_id})`);
+            query = format(`UPDATE ${this._table} SET ${col} = ARRAY[]::INTEGER[] WHERE (user_id = ${user_id})`);
         else
-            query = format(`UPDATE ${this._table} SET ${col} = ARRAY[${filtered}] WHERE ('user_id' = ${user_id})`);
+            query = format(`UPDATE ${this._table} SET ${col} = ARRAY[${filtered}] WHERE (user_id = ${user_id})`);
         await this._client.query(query)
         return await this.getById(user_id)
     }
 
-    async reorder(user_id, col, meal_order) {
+    async reorder(user_id, meal_order) {
         if (!(await this.getById(user_id))) throw new NotFoundException()
-        let query = format(`UPDATE ${this._table} SET ${col} = ARRAY[${meal_order}] WHERE ('user_id' = ${user_id})`);
+        let query = format(`UPDATE ${this._table} SET meal = ARRAY[${meal_order}] WHERE (user_id = ${user_id})`);
         await this._client.query(query)
         return await this.getById(user_id)
     }
 
     async getById(id) {
-        let result = await this._client.query(`SELECT * FROM ${this._table} WHERE 'user_id' = '${id}';`)
+        let result = await this._client.query(`SELECT * FROM ${this._table} WHERE user_id = '${id}';`)
         if (result.rowCount > 0) {
             return this._getMetaFromRow(result.rows[0])
         } else {
@@ -70,7 +70,7 @@ class MetadataRepository extends BaseRepository {
 
     async checkExistId(id) {
         let newUserResult = await this._client.query(
-            `SELECT COUNT(*) FROM ${this._table} WHERE 'user_id' = '${id}'; `
+            `SELECT COUNT(*) FROM ${this._table} WHERE user_id = '${id}'; `
         );
         let count = parseInt(newUserResult.rows[0].count);
 
@@ -83,12 +83,12 @@ class MetadataRepository extends BaseRepository {
         if (!(await this.getById(id))) {
             throw new NotFoundException();
         }
-        const query = format(`DELETE FROM ${this._table} WHERE 'id' = ${id}`);
+        const query = format(`DELETE FROM ${this._table} WHERE id = ${id}`);
         await this._client.query(query);
     }
 
     async addTo(user_id, col, recipe_id) {
-        const query = format(`UPDATE ${this._table} SET ${col} = ${col} || ${recipe_id} WHERE 'user_id' = ${user_id}`);
+        const query = format(`UPDATE ${this._table} SET ${col} = ${col} || ${recipe_id} WHERE user_id = ${user_id}`);
         await this._client.query(query)
         return await this.getById(user_id)
     }
