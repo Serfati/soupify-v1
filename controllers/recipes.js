@@ -308,7 +308,7 @@ async function search(req, res) {
             .map((recipe) => recipe.data)
             .filter((recipe) => recipe.instructions.length > 0 && recipe.id > 200)
         recipes = cleanUp(recipes)
-        if(sort) recipes = sorting(recipes, sort)
+        if(sort && sort != 'none') recipes = sorting(recipes, sort)
         let ids = recipes.map((recipe) => recipe.id);
         let lim = (limit) ? parseInt(limit) : 5
         let paginatedRecipes = await paginator(recipes, parseInt(page), lim)
@@ -370,6 +370,7 @@ function cleanUp(recipes) {
 }
 
 function sorting(recipes ,type) {
+    console.log('sorting by ' + type)
     recipes.sort((a, b) => parseInt(a[type]) - parseInt(b[type]));
 }
 
