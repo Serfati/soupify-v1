@@ -412,11 +412,11 @@ Responses have a specific format. We will use the User model to depict an exampl
     <h4 class="field-label">400</h4>
     No login or password.
         <a href="#ApiResponse">ApiResponse</a>
-    <h4 class="field-label">404</h4>
-    User not found.
-        <a href="#ApiResponse">ApiResponse</a>
     <h4 class="field-label">401</h4>
     Authentication failed. Wrong password.
+        <a href="#ApiResponse">ApiResponse</a>
+    <h4 class="field-label">404</h4>
+    User not found.
         <a href="#ApiResponse">ApiResponse</a>
     <h4 class="field-label">500</h4>
     Internal Server Error.
@@ -675,12 +675,12 @@ Responses have a specific format. We will use the User model to depict an exampl
     <h4 class="field-label">201</h4>
     OK
         <a href="#IngredientWithId">IngredientWithId</a>
-    <h4 class="field-label">401</h4>
-    Unauthorized.
-        <a href="#ApiResponse">ApiResponse</a>
     <h4 class="field-label">400</h4>
     Bad request
         <a href="#"></a>
+    <h4 class="field-label">401</h4>
+    Unauthorized.
+        <a href="#ApiResponse">ApiResponse</a>
   </div> <!-- method -->
   <hr/>
   <div class="method"><a name="deleteIngredient"></a>
@@ -2039,11 +2039,11 @@ Responses have a specific format. We will use the User model to depict an exampl
     <h4 class="field-label">200</h4>
     User was created.
         <a href="#user">user</a>
-    <h4 class="field-label">404</h4>
-    User not found by id.
-        <a href="#ApiResponse">ApiResponse</a>
     <h4 class="field-label">401</h4>
     Unauthorized.
+        <a href="#ApiResponse">ApiResponse</a>
+    <h4 class="field-label">404</h4>
+    User not found by id.
         <a href="#ApiResponse">ApiResponse</a>
     <h4 class="field-label">500</h4>
     Internal Server Error.

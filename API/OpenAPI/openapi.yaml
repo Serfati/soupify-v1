@@ -29,30 +29,30 @@ info:
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
-  version: "1.1"
+  version: "1.2"
 servers:
 - url: https://virtserver.swaggerhub.com/serfatio/Soupify/1.0.0
   description: SwaggerHub API Auto Mocking
 - url: https://soupify.herokuapp.com/api/
   description: RESRful API server - Soupify App
 tags:
-  - name: auth
-    description: Endpoint for authentication.
-  - name: account
-    description: Endpoint for working with current account.
-  - name: users
-    description: Endpoint for working with use.
-  - name: recipes
-    description: Everything about our recipes
-  - name: ingredients
-    description: Ingredients we use
-  - name: meta
-    description: meta-data for users
+- name: auth
+  description: Endpoint for authentication.
+- name: account
+  description: Endpoint for working with current account.
+- name: users
+  description: Endpoint for working with use.
+- name: recipes
+  description: Everything about our recipes
+- name: ingredients
+  description: Ingredients we use
+- name: meta
+  description: meta-data for users
 paths:
   /authenticate:
     post:
       tags:
-        - auth
+      - auth
       summary: Authentication in the system.
       operationId: auth
       requestBody:
@@ -95,7 +95,7 @@ paths:
   /authenticate/password-reset:
     put:
       tags:
-        - auth
+      - auth
       summary: Reset user password by Q&A.
       description: A user sends his answer on question to restore his account.
       operationId: resetPassword
@@ -119,7 +119,7 @@ paths:
                 $ref: '#/components/schemas/ApiResponse'
     post:
       tags:
-        - auth
+      - auth
       summary: Reset user password by Q&A.
       description: A user get his question for restore his account.
       operationId: getUserRecoveryQ
@@ -144,7 +144,7 @@ paths:
   /account:
     get:
       tags:
-        - account
+      - account
       summary: Get current account.
       description: Returns account information. The token identifies the account.
       operationId: getCurrentAccount
@@ -168,11 +168,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/ApiResponse'
       security:
-        - bearerAuth: []
+      - bearerAuth: []
   /users:
     get:
       tags:
-        - users
+      - users
       summary: Get all users
       description: This **Admin** endpoint is designed to get all users according
         to the specified query paramaters. All query parameters are optional. If no
@@ -180,22 +180,22 @@ paths:
         limit and offset.
       operationId: getAllUsers
       parameters:
-        - name: page
-          in: query
-          required: false
-          style: form
-          explode: true
-          schema:
-            type: integer
-            format: int64
-        - name: limit
-          in: query
-          required: false
-          style: form
-          explode: true
-          schema:
-            type: integer
-            format: int64
+      - name: page
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          format: int64
+      - name: limit
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          format: int64
       responses:
         "200":
           description: Array of users
@@ -224,10 +224,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/ApiResponse'
       security:
-        - bearerAuth: []
+      - bearerAuth: []
     post:
       tags:
-        - users
+      - users
       summary: Create a new user.
       description: Create a new user is system. Role by default - `client`.
       operationId: createUser
@@ -265,18 +265,18 @@ paths:
   /users/{id}:
     get:
       tags:
-        - users
+      - users
       summary: Get a user by {id}.
       operationId: getUserById
       parameters:
-        - name: id
-          in: path
-          description: User id.
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: integer
+      - name: id
+        in: path
+        description: User id.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
       responses:
         "200":
           description: User was created.
@@ -303,22 +303,22 @@ paths:
               schema:
                 $ref: '#/components/schemas/ApiResponse'
       security:
-        - bearerAuth: []
+      - bearerAuth: []
     put:
       tags:
-        - users
+      - users
       summary: Update a user.
       description: Update a user.
       operationId: updateUser
       parameters:
-        - name: id
-          in: path
-          description: User id.
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: integer
+      - name: id
+        in: path
+        description: User id.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
       requestBody:
         content:
           application/json:
@@ -364,7 +364,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ApiResponse'
       security:
-        - bearerAuth: []
+      - bearerAuth: []
   /upload:
     post:
       summary: Upload new image to cloudinary API.
@@ -381,7 +381,7 @@ paths:
           content:
             application-json:
               schema:
-                $ref: '#/components/schemas/fileInfo'
+                $ref: '#/components/schemas/ImageUrl'
         "400":
           description: The file is not in the request.
           content:
@@ -409,27 +409,27 @@ paths:
   /recipes:
     get:
       tags:
-        - recipes
+      - recipes
       summary: List all recipes from database
       description: Retrive all recipes from database.
       operationId: listRecipes
       parameters:
-        - name: page
-          in: query
-          required: false
-          style: form
-          explode: true
-          schema:
-            type: integer
-            format: int64
-        - name: limit
-          in: query
-          required: false
-          style: form
-          explode: true
-          schema:
-            type: integer
-            format: int64
+      - name: page
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          format: int64
+      - name: limit
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          format: int64
       responses:
         "200":
           description: OK
@@ -441,7 +441,7 @@ paths:
                   $ref: '#/components/schemas/RecipeWithId'
     post:
       tags:
-        - recipes
+      - recipes
       summary: Create a new recipe.
       operationId: createRecipe
       requestBody:
@@ -482,35 +482,35 @@ paths:
               schema:
                 $ref: '#/components/schemas/ApiResponse'
       security:
-        - bearerAuth: []
+      - bearerAuth: []
   /recipes/{id}:
     get:
       tags:
-        - recipes
+      - recipes
       summary: Get a recipe by {id}.
       description: Retrive a recipe from database or from spooncaular API with given
         id according to local parameter. `local=true` => DB. for now only `100-160`
         reicpe`s ids inserted to database.
       operationId: getDishById
       parameters:
-        - name: id
-          in: path
-          description: recipe id.
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: integer
-            example: 151
-        - name: local
-          in: query
-          description: recipe id.
-          required: false
-          style: form
-          explode: true
-          schema:
-            type: boolean
-            example: true
+      - name: id
+        in: path
+        description: recipe id.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          example: 151
+      - name: local
+        in: query
+        description: recipe id.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: boolean
+          example: true
       responses:
         "200":
           description: OK
@@ -534,18 +534,18 @@ paths:
                 $ref: '#/components/schemas/ApiResponse'
     put:
       tags:
-        - recipes
+      - recipes
       summary: Update a recipe.
       operationId: updateDish
       parameters:
-        - name: id
-          in: path
-          description: recipe id.
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: integer
+      - name: id
+        in: path
+        description: recipe id.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
       requestBody:
         content:
           application/json:
@@ -584,23 +584,23 @@ paths:
               schema:
                 $ref: '#/components/schemas/ApiResponse'
       security:
-        - bearerAuth: []
+      - bearerAuth: []
     delete:
       tags:
-        - recipes
+      - recipes
       summary: Deletes a recipe
       description: '**Admin** endpoint'
       operationId: deleteRecipe
       parameters:
-        - name: id
-          in: path
-          description: Recipe id to delete
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: integer
-            format: int64
+      - name: id
+        in: path
+        description: Recipe id to delete
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
       responses:
         "204":
           description: OK
@@ -629,11 +629,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/ApiResponse'
       security:
-        - bearerAuth: []
+      - bearerAuth: []
   /recipes/rand:
     get:
       tags:
-        - recipes
+      - recipes
       summary: Display 3 random recipes from Spooncaular API
       description: Display 3 random recipes from Spooncaular API
       responses:
@@ -660,87 +660,94 @@ paths:
   /recipes/search:
     get:
       tags:
-        - recipes
+      - recipes
       summary: Search for recipes from Spooncaular API
       parameters:
-        - name: query
-          in: query
-          required: true
-          style: form
-          explode: true
-          schema:
-            type: string
-            example: sushi
-        - name: cuisine
-          in: query
-          required: false
-          style: form
-          explode: true
-          schema:
-            $ref: '#/components/schemas/cuisine'
-        - name: diet
-          in: query
-          required: false
-          style: form
-          explode: true
-          schema:
-            $ref: '#/components/schemas/diet'
-        - name: intolerances
-          in: query
-          required: false
-          style: form
-          explode: true
-          schema:
-            $ref: '#/components/schemas/intolerance'
-        - name: number
-          in: query
-          description: How many Recipes will be returned
-          required: false
-          style: form
-          explode: true
-          schema:
-            type: integer
-            default: 5
-            enum:
-              - 5
-              - 10
-              - 15
-        - name: instructionsRequired
-          in: query
-          required: false
-          style: form
-          explode: true
-          schema:
-            type: boolean
-            format: int64
-            example: true
-        - name: offset
-          in: query
-          required: false
-          style: form
-          explode: true
-          schema:
-            type: integer
-            format: int16
-            example: 1
-        - name: page
-          in: query
-          required: false
-          style: form
-          explode: true
-          schema:
-            type: integer
-            format: int16
-            example: 1
-        - name: limit
-          in: query
-          required: false
-          style: form
-          explode: true
-          schema:
-            type: integer
-            format: int16
-            example: 2
+      - name: query
+        in: query
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+          example: sushi
+      - name: cuisine
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          $ref: '#/components/schemas/cuisine'
+      - name: diet
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          $ref: '#/components/schemas/diet'
+      - name: intolerances
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          $ref: '#/components/schemas/intolerance'
+      - name: number
+        in: query
+        description: How many Recipes will be returned
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          default: 5
+          enum:
+          - 5
+          - 10
+          - 15
+      - name: instructionsRequired
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: boolean
+          format: int64
+          example: true
+      - name: offset
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          format: int16
+          example: 1
+      - name: page
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          format: int16
+          example: 1
+      - name: limit
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          format: int16
+          example: 2
+      - name: sort
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          $ref: '#/components/schemas/sorting'
       responses:
         "200":
           description: OK
@@ -765,43 +772,43 @@ paths:
   /recipe/{recipeId}/ingredients/{ingredientId}:
     put:
       tags:
-        - recipes
+      - recipes
       summary: Update the amount/unit of ingredient in a recipe
       description: Update the amount or unit of ingredient in a recipe
       operationId: updateIngredientAmount
       parameters:
-        - name: recipeId
-          in: path
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: integer
-            format: int64
-        - name: ingredientId
-          in: path
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: integer
-            format: int64
-        - name: amount
-          in: query
-          required: true
-          style: form
-          explode: true
-          schema:
-            type: number
-            example: 3.5
-        - name: unit
-          in: query
-          required: true
-          style: form
-          explode: true
-          schema:
-            type: string
-            example: tablespoon
+      - name: recipeId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      - name: ingredientId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      - name: amount
+        in: query
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: number
+          example: 3.5
+      - name: unit
+        in: query
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+          example: tablespoon
       responses:
         "200":
           description: OK
@@ -814,46 +821,46 @@ paths:
         "404":
           description: Object not found
       security:
-        - bearerAuth: []
+      - bearerAuth: []
     post:
       tags:
-        - recipes
+      - recipes
       summary: Add an ingredient to a recipe
       description: Add an ingredient to a given recipe
       operationId: addIngredientToRecipe
       parameters:
-        - name: recipeId
-          in: path
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: integer
-            format: int64
-        - name: ingredientId
-          in: path
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: integer
-            format: int64
-        - name: amount
-          in: query
-          required: true
-          style: form
-          explode: true
-          schema:
-            type: number
-            example: 3.5
-        - name: unit
-          in: query
-          required: true
-          style: form
-          explode: true
-          schema:
-            type: string
-            example: tablespoon
+      - name: recipeId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      - name: ingredientId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      - name: amount
+        in: query
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: number
+          example: 3.5
+      - name: unit
+        in: query
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+          example: tablespoon
       responses:
         "201":
           description: OK
@@ -866,60 +873,60 @@ paths:
         "404":
           description: Object not found
       security:
-        - bearerAuth: []
+      - bearerAuth: []
     delete:
       tags:
-        - recipes
+      - recipes
       summary: Remove ingredient from a recipe.
       description: Remove ingredient from a recipe.
       operationId: deleteIngredientFromRecipe
       parameters:
-        - name: recipeId
-          in: path
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: integer
-            format: int64
-        - name: ingredientId
-          in: path
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: integer
-            format: int64
+      - name: recipeId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      - name: ingredientId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
       responses:
         "204":
           description: OK
         "404":
           description: Object not found
       security:
-        - bearerAuth: []
+      - bearerAuth: []
   /ingredients:
     get:
       tags:
-        - ingredients
+      - ingredients
       summary: Get all ingredients
       operationId: listIngredients
       parameters:
-        - name: page
-          in: query
-          required: false
-          style: form
-          explode: true
-          schema:
-            type: integer
-            format: int64
-        - name: limit
-          in: query
-          required: false
-          style: form
-          explode: true
-          schema:
-            type: integer
-            format: int64
+      - name: page
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          format: int64
+      - name: limit
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          format: int64
       responses:
         "200":
           description: OK
@@ -931,7 +938,7 @@ paths:
                   $ref: '#/components/schemas/IngredientWithId'
     post:
       tags:
-        - ingredients
+      - ingredients
       summary: Add a new ingredient
       operationId: addIngredient
       requestBody:
@@ -956,22 +963,22 @@ paths:
               schema:
                 $ref: '#/components/schemas/ApiResponse'
       security:
-        - bearerAuth: []
+      - bearerAuth: []
   /ingredient/{ingredientId}:
     get:
       tags:
-        - ingredients
+      - ingredients
       summary: Get an ingredient with given id.
       operationId: getIngredientById
       parameters:
-        - name: ingredientId
-          in: path
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: integer
-            format: int64
+      - name: ingredientId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
       responses:
         "200":
           description: OK
@@ -983,19 +990,19 @@ paths:
           description: Object not found
     put:
       tags:
-        - ingredients
+      - ingredients
       summary: Update an ingredient
       description: Updates ingredient with given id
       operationId: updateIngredient
       parameters:
-        - name: ingredientId
-          in: path
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: integer
-            format: int64
+      - name: ingredientId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
       requestBody:
         content:
           application/json:
@@ -1018,22 +1025,22 @@ paths:
         "404":
           description: Ingredient not found
       security:
-        - bearerAuth: []
+      - bearerAuth: []
     delete:
       tags:
-        - ingredients
+      - ingredients
       summary: Delete an igredient
       operationId: deleteIngredient
       parameters:
-        - name: ingredientId
-          in: path
-          description: Id of ingredient to be deleted
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: integer
-            format: int64
+      - name: ingredientId
+        in: path
+        description: Id of ingredient to be deleted
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
       responses:
         "204":
           description: OK
@@ -1044,31 +1051,31 @@ paths:
               schema:
                 $ref: '#/components/schemas/ApiResponse'
       security:
-        - bearerAuth: []
+      - bearerAuth: []
   /metadata/info:
     get:
       tags:
-        - meta
+      - meta
       summary: Get all users meta-data
       description: '**Admin** endpoint'
       operationId: getAllmeta
       parameters:
-        - name: page
-          in: query
-          required: false
-          style: form
-          explode: true
-          schema:
-            type: integer
-            format: int64
-        - name: limit
-          in: query
-          required: false
-          style: form
-          explode: true
-          schema:
-            type: integer
-            format: int64
+      - name: page
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          format: int64
+      - name: limit
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          format: int64
       responses:
         "200":
           description: OK
@@ -1097,11 +1104,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/ApiResponse'
       security:
-        - bearerAuth: []
+      - bearerAuth: []
   /metadata:
     get:
       tags:
-        - meta
+      - meta
       summary: Get an user metadata with given id.
       description: Return user current lists.
       operationId: getMetaById
@@ -1119,11 +1126,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/ApiResponse'
       security:
-        - bearerAuth: []
+      - bearerAuth: []
   /metadata/last-seen:
     get:
       tags:
-        - meta
+      - meta
       summary: Get a user's last seen recipes.
       description: Return user 3 last seen recipes.
       operationId: lastSeen
@@ -1143,21 +1150,21 @@ paths:
               schema:
                 $ref: '#/components/schemas/ApiResponse'
       security:
-        - bearerAuth: []
+      - bearerAuth: []
   /metadata/{list}:
     get:
       tags:
-        - meta
+      - meta
       summary: Get a user recipes's list metadata.
       operationId: getMealById
       parameters:
-        - name: list
-          in: path
-          required: true
-          style: simple
-          explode: false
-          schema:
-            $ref: '#/components/schemas/list'
+      - name: list
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          $ref: '#/components/schemas/list'
       responses:
         "200":
           description: OK
@@ -1172,30 +1179,30 @@ paths:
               schema:
                 $ref: '#/components/schemas/ApiResponse'
       security:
-        - bearerAuth: []
+      - bearerAuth: []
   /metadata/{list}/{recipeId}:
     post:
       tags:
-        - meta
+      - meta
       summary: Add a user  recipes's list iteam metadata with given id.
       description: 'List is enum '
       operationId: AddMealById
       parameters:
-        - name: recipeId
-          in: path
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: integer
-            format: int64
-        - name: list
-          in: path
-          required: true
-          style: simple
-          explode: false
-          schema:
-            $ref: '#/components/schemas/list'
+      - name: recipeId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      - name: list
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          $ref: '#/components/schemas/list'
       responses:
         "200":
           description: OK
@@ -1210,29 +1217,29 @@ paths:
               schema:
                 $ref: '#/components/schemas/ApiResponse'
       security:
-        - bearerAuth: []
+      - bearerAuth: []
     delete:
       tags:
-        - meta
+      - meta
       summary: remove a user list's recipe metadata with given id.
       operationId: removeMealById
       parameters:
-        - name: recipeId
-          in: path
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: integer
-            format: int64
-            example: 2
-        - name: list
-          in: path
-          required: true
-          style: simple
-          explode: false
-          schema:
-            $ref: '#/components/schemas/list'
+      - name: recipeId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+          example: 2
+      - name: list
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          $ref: '#/components/schemas/list'
       responses:
         "200":
           description: OK
@@ -1247,13 +1254,41 @@ paths:
               schema:
                 $ref: '#/components/schemas/ApiResponse'
       security:
-        - bearerAuth: []
+      - bearerAuth: []
+  /metadata/reorder:
+    post:
+      tags:
+      - meta
+      summary: Reorder user's meal recipes.
+      description: 'List is enum '
+      operationId: reorderMeal
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/metadataList'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/metadata'
+        "401":
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+      security:
+      - bearerAuth: []
 components:
   schemas:
     creditionals:
       required:
-        - login
-        - password
+      - login
+      - password
       type: object
       properties:
         login:
@@ -1337,7 +1372,7 @@ components:
           example: Israel
     metadata:
       required:
-        - id
+      - id
       type: object
       properties:
         id:
@@ -1348,46 +1383,46 @@ components:
           type: array
           description: watched recipes ids
           example:
-            - 667
-            - 12
-            - 98
+          - 667
+          - 12
+          - 98
           items:
             type: integer
         favs:
           type: array
           description: favs recipes ids
           example:
-            - 3001
-            - 2
-            - 115
+          - 3001
+          - 2
+          - 115
           items:
             type: integer
         personal:
           type: array
           description: personal recipes ids
           example:
-            - 7
-            - 10
-            - 15
-            - 25
+          - 7
+          - 10
+          - 15
+          - 25
           items:
             type: integer
         meal:
           type: array
           description: meal recipes ids
           example:
-            - 15
-            - 20
-            - 22
+          - 15
+          - 20
+          - 22
           items:
             type: integer
         family:
           type: array
           description: user family recipes ids
           example:
-            - 151
-            - 158
-            - 180
+          - 151
+          - 158
+          - 180
           items:
             type: integer
     metadataList:
@@ -1397,11 +1432,11 @@ components:
           type: array
           description: watched/favs/meal/personal recipes ids
           example:
-            - 667
-            - 12
-            - 98
-            - 3001
-            - 15
+          - 667
+          - 12
+          - 98
+          - 3001
+          - 15
           items:
             type: integer
     role:
@@ -1409,91 +1444,47 @@ components:
       description: User role in system. Define user privileges in the system.
       example: Admin
       enum:
-        - Admin
-        - Client
-        - Chef
-        - Reviewer
+      - Admin
+      - Client
+      - Chef
+      - Reviewer
     list:
       type: string
       description: User recipes metadata lists in system.
       example: Admin
       enum:
-        - favs
-        - watched
-        - meal
-        - personal
-        - family
-    fileInfo:
+      - favs
+      - watched
+      - meal
+      - personal
+      - family
+    ImageUrl:
       type: object
       properties:
-        id:
-          type: integer
-          description: file id
-          example: 2123
-        name:
-          type: string
-          description: file id
-          example: newFile.jpg
         url:
           type: string
-          description: file url
-          example: image/jpg
+          description: Cloudinary file url
+          example: https://res.cloudinary.com/serfati/image/upload/v1591970948/soupify_zrbnbo.png
     RecipeWithId:
       allOf:
-        - $ref: '#/components/schemas/Recipe'
-        - type: object
-          properties:
-            id:
-              type: integer
-              format: int64
-    RecipePreview:
-      required:
-        - aggregate_likes
-        - gluten_free
-        - image
-        - ready_in_minutes
-        - serving
-        - title
-        - vegan
-        - vegetarian
-      type: object
-      properties:
-        title:
-          type: string
-          example: Spaghetti Carbonara
-        ready_in_minutes:
-          type: number
-          example: 25
-        aggregate_likes:
-          type: number
-          example: 1217
-        serving:
-          type: number
-          example: 6
-        vegetarian:
-          type: boolean
-          example: true
-        vegan:
-          type: boolean
-          example: true
-        gluten_free:
-          type: boolean
-          example: false
-        image:
-          type: string
-          example: https://spoonacular.com/recipeImages/535835-556x370.jpg
+      - $ref: '#/components/schemas/Recipe'
+      - type: object
+        properties:
+          id:
+            type: integer
+            format: int64
     Recipe:
       required:
-        - aggregate_likes
-        - extended_ingredients
-        - gluten_free
-        - image
-        - instructions
-        - ready_in_minutes
-        - serving
-        - title
-        - vegan
-        - vegetarian
+      - aggregate_likes
+      - extended_ingredients
+      - gluten_free
+      - image
+      - instructions
+      - ready_in_minutes
+      - serving
+      - title
+      - vegan
+      - vegetarian
       type: object
       properties:
         title:
@@ -1529,7 +1520,7 @@ components:
             $ref: '#/components/schemas/IngredientInRecipe'
     Ingredient:
       required:
-        - name
+      - name
       type: object
       properties:
         name:
@@ -1537,19 +1528,19 @@ components:
           example: flour
     IngredientWithId:
       allOf:
-        - $ref: '#/components/schemas/Ingredient'
-        - required:
-            - id
-          type: object
-          properties:
-            id:
-              type: integer
-              format: int64
+      - $ref: '#/components/schemas/Ingredient'
+      - required:
+        - id
+        type: object
+        properties:
+          id:
+            type: integer
+            format: int64
     IngredientInRecipe:
       required:
-        - amount
-        - id
-        - unit
+      - amount
+      - id
+      - unit
       type: object
       properties:
         id:
@@ -1568,60 +1559,66 @@ components:
     cuisine:
       type: string
       enum:
-        - African
-        - American
-        - British
-        - Cajun
-        - Caribbean
-        - Chinese
-        - Eastern European
-        - European
-        - French
-        - German
-        - Greek
-        - Indian
-        - Irish
-        - Italian
-        - Japanese
-        - Jewish
-        - Korean
-        - Latin American
-        - Mediterranean
-        - Mexican
-        - Middle Eastern
-        - Nordic
-        - Southern
-        - Spanish
-        - Thai
-        - Vietnamese
+      - African
+      - American
+      - British
+      - Cajun
+      - Caribbean
+      - Chinese
+      - Eastern European
+      - European
+      - French
+      - German
+      - Greek
+      - Indian
+      - Irish
+      - Italian
+      - Japanese
+      - Jewish
+      - Korean
+      - Latin American
+      - Mediterranean
+      - Mexican
+      - Middle Eastern
+      - Nordic
+      - Southern
+      - Spanish
+      - Thai
+      - Vietnamese
     diet:
       type: string
       enum:
-        - Gluten Free
-        - Ketogenic
-        - Vegetarian
-        - Lacto-Vegetarian
-        - Ovo-Vegetarian
-        - Vegan
-        - Pescetarian
-        - Paleo
-        - Primal
-        - Whole30
+      - Gluten Free
+      - Ketogenic
+      - Vegetarian
+      - Lacto-Vegetarian
+      - Ovo-Vegetarian
+      - Vegan
+      - Pescetarian
+      - Paleo
+      - Primal
+      - Whole30
     intolerance:
       type: string
       enum:
-        - Dairy
-        - Egg
-        - Gluten
-        - Grain
-        - Peanut
-        - Seafood
-        - Sesame
-        - Shellfish
-        - Soy
-        - Sulfite
-        - Tree Nut
-        - Wheat
+      - Dairy
+      - Egg
+      - Gluten
+      - Grain
+      - Peanut
+      - Seafood
+      - Sesame
+      - Shellfish
+      - Soy
+      - Sulfite
+      - Tree Nut
+      - Wheat
+    sorting:
+      type: string
+      enum:
+      - none
+      - aggregate_likes
+      - ready_in_minutes
     ApiResponse:
       type: object
       properties:
@@ -1630,17 +1627,17 @@ components:
           description: Response description.
     inline_response_200:
       allOf:
-        - $ref: '#/components/schemas/user'
-        - type: object
-          properties:
-            token:
-              type: string
-              format: int64
-              example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6IkFkbWluIiwiaWF0IjoxNTkxMzA3MTQ2fQ
+      - $ref: '#/components/schemas/user'
+      - type: object
+        properties:
+          token:
+            type: string
+            format: int64
+            example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6IkFkbWluIiwiaWF0IjoxNTkxMzA3MTQ2fQ
     body:
       required:
-        - answer
-        - login
+      - answer
+      - login
       type: object
       properties:
         login:
@@ -1659,7 +1656,7 @@ components:
           example: Uo3HSq6
     body_1:
       required:
-        - login
+      - login
       type: object
       properties:
         login:
@@ -1675,7 +1672,7 @@ components:
     body_2:
       type: object
       properties:
-        file:
+        localFile:
           type: array
           items:
             type: string
@@ -1686,7 +1683,7 @@ components:
         application/json:
           schema:
             required:
-              - amount
+            - amount
             type: object
             properties:
               amount:
