@@ -14,21 +14,16 @@ This RESTful API deployed with the help of [`Heroku`](https://heroku.com/) which
 
 ## Linked Repositories
 
-- [Front-end Web client]() - TODO
-- [API Specification v1.0](https://github.com/Serfati/soupify-api-specs)
-- [API Specification v1.1](https://github.com/Serfati/soupify-api-specs-v1.1)
-
+- [Front-end Web client](https://github.com/uspeit/webenv-assignment3-client)
+- [API Specification v1.2](https://github.com/Serfati/soupify-api-specs)
 ---
 
 ## 📃 Documentation
 
-- [OpenApi 3 Specification](https://app.swaggerhub.com/apis-docs/serfatio/Soupify/1.1) - files in [API](https://github.com/Serfati/soupify-v1/tree/master/API/OpenAPI) folder
-- [Vue Web Application]() - TODO
+- [OpenApi 3 Specification](https://app.swaggerhub.com/apis-docs/serfatio/Soupify/1.2) - files in [API](https://github.com/Serfati/soupify-v1/tree/master/API/OpenAPI) folder
+- [Vue.js Web Application](https://uspeit.github.io/webenv-assignment3-client-dist/#/)
 - Default Users: 
   - Admin - root: toor!1
-  - Client - serfati: toor!1
-  - Chef - yarden: yarden123
-
 ---
 
 ## ⚠️ Prerequisites
