@@ -7,7 +7,7 @@ info:
     \ for Web-Development-Environments course *@Ben-Gurion University*. For more details\
     \ on the process/design please read the linked *README.md* file.\n  \n**Authorization**:\n\
     A logged-in user must update/delete his resources **ONLY**! Otherwise, he will\
-    \ receive 403 Unauthorized Error.\n\n**Base URL:** `{your_custom_url}/api`\n\n\
+    \ receive 403 Unauthorized Error.\n\n**Base URL: ** `{your_custom_url}/api`\n\n\
     ---\n**Validity**:\nAll parameters sent to any API endpoint are validated according\
     \ to the following criteria:\n* Required vs Optional\n* Numeric vs Alpha vs Alphanumeric\n\
     * Unique vs Multiple\n* Min/max length of strings\n* Min/max values of numbers\n\
