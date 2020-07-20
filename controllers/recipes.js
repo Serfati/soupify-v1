@@ -242,33 +242,33 @@ async function updateRecipe(req, res) {
 async function random(_, res) {
     try {
         // TODO fetch random recipes from Spooncaular API
-        // let randoms = []
-        // let number = 3
-        // while (randoms.length != 3) {
-        //     if (randoms.length > 1)
-        //         number = 1
-        //     randoms = await axios.get(`${api_domain}/random`, {
-        //         params: {
-        //             apiKey: process.env.spooncaular,
-        //             number: number
-        //         }
-        //     })
-        //
-        //     randoms = await Promise.all(
-        //         randoms.data.recipes.map((recipe_raw) => getInfo(recipe_raw.id)));
-        //     randoms = randoms.map((recipe) => recipe.data).filter((recipe) => recipe.instructions.length > 0);
-        //     randoms = cleanUp(randoms)
-        // }
+        let randoms = []
+        let number = 3
+        while (randoms.length != 3) {
+            if (randoms.length > 1)
+                number = 1
+            randoms = await axios.get(`${api_domain}/random`, {
+                params: {
+                    apiKey: process.env.spooncaular,
+                    number: number
+                }
+            })
+
+            randoms = await Promise.all(
+                randoms.data.recipes.map((recipe_raw) => getInfo(recipe_raw.id)));
+            randoms = randoms.map((recipe) => recipe.data).filter((recipe) => recipe.instructions.length > 0);
+            randoms = cleanUp(randoms)
+        }
 
         // TODO fetch random recipes from database
-        let rands = await Promise.all(Array(3).fill().map(async function (_, i) {
-            let random = Math.floor(Math.random() * (160 - 100 + 1) + 100)
-            let recipe = await soupifyRepository.Recipes.getById(random);
-            return recipe
-        }));
+        // let randoms = await Promise.all(Array(3).fill().map(async function (_, i) {
+        //     let random = Math.floor(Math.random() * (160 - 100 + 1) + 100)
+        //     let recipe = await soupifyRepository.Recipes.getById(random);
+        //     return recipe
+        // }));
 
 
-        await res.status(HttpStatus.OK).json({results: rands});
+        await res.status(HttpStatus.OK).json({results: randoms});
     } catch (e) {
         await res
             .status(HttpStatus.INTERNAL_SERVER_ERROR)
