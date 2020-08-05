@@ -20,7 +20,7 @@
     "datauri": "^3.0.0",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "express-fileupload": "^1.1.7-alpha.3",
+    "express-fileupload": "^1.1.9",
     "formidable": "^1.2.2",
     "http-status-codes": "^1.4.0",
     "jsonwebtoken": "^8.5.1",
