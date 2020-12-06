@@ -113,16 +113,6 @@ $> google-chrome http://localhost:5000/
 
 ---
 
-## Team Members:
-
-| Name             | Username                                    | Contact Info              | ID        |
-| ---------------- | ------------------------------------------- | ------------------------- | --------- |
-| _Yarden Levy_    | [YardenLevy](https://github.com/YardenLevy) | YardenLevy@post.bgu.ac.il | 204341580 |
-| _Avihai Serfati_ | [serfati](https://github.com/serfati)       | serfata@post.bgu.ac.il    | 204520803 |
-| _Eitan Fedenko_  | [uspeit](https://github.com/uspeit)         | eitanfe@post.bgu.ac.il    | 319199840 |
-
----
-
 ## ⚖️ License
 
 [![License](http://img.shields.io/:license-mit-blue.svg?style=flat-square)](http://badges.mit-license.org)
